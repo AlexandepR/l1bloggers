@@ -10,7 +10,7 @@ const port = process.env.PORT || 5001
 let videos = [
 ]
 app.get('/', (req, res) => {
-    res.send('Hello')
+    res.send('Hello Blog')
 })
 
 
