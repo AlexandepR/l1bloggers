@@ -76,7 +76,15 @@ app.put('/bloggers/:bloggersId', (req: Request, res: Response) => {
 })
 app.delete('/bloggers/:bloggerId', (req: Request, res: Response) => {
     const id = req.body.bloggerId;
-
+    if (!id) {
+        res.sendStatus(404)
+    }
+    for (let i = 0; i < bloggers.length; i++) {
+        if (bloggers[i].id === id) {
+            bloggers.splice(i, 1)
+            res.sendStatus(204)
+        }
+    }
 })
 
 app.listen(port, () => {
