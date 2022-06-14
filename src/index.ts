@@ -26,33 +26,57 @@ app.get('/bloggers/:bloggersId', (req: Request, res: Response) => {
     }
 })
 app.post('/bloggers', (req: Request, res: Response) => {
-        const name = req.body.name;
-        const youtubeUrl = req.body.youtubeUrl;
-        const url = /https?:\/\/(www\.)[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
-        if (!name || !youtubeUrl || typeof name !== 'string' || name.length > 15 ||
-            typeof youtubeUrl !== 'string' || youtubeUrl.length > 100
-            || !url.test(String(youtubeUrl).toLowerCase())
-        ) {
-            res.sendStatus(400).send({
-                    errorsMessages: [{
-                        message: "string",
-                        field: 'string'
-                    }],
-                })
-            return
-        } else {
-            const newBlogger = {
-                id: +(new Date()),
-                name: name,
-                youtubeUrl: youtubeUrl
-            }
-            bloggers.push(newBlogger)
-            res.send(bloggers)
-            res.sendStatus(201)
+    const name = req.body.name;
+    const youtubeUrl = req.body.youtubeUrl;
+    const url = /https?:\/\/(www\.)[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
+    if (!name || !youtubeUrl || typeof name !== 'string' || name.length > 15 ||
+        typeof youtubeUrl !== 'string' || youtubeUrl.length > 100
+        || !url.test(String(youtubeUrl).toLowerCase())
+    ) {
+        res.sendStatus(400).send({
+            errorsMessages: [{
+                message: "string",
+                field: 'string'
+            }],
+        })
+        return
+    } else {
+        const newBlogger = {
+            id: +(new Date()),
+            name: name,
+            youtubeUrl: youtubeUrl
         }
-    })
-app.put('/bloggers/:bloggersId', (req: Request, res:Response) => {
+        bloggers.push(newBlogger)
+        res.send(bloggers)
+        res.sendStatus(201)
+    }
+})
+app.put('/bloggers/:bloggersId', (req: Request, res: Response) => {
     const id = req.body.bloggerId;
+    const name = req.body.name;
+    const youtubeUrl = req.body.youtubeUrl;
+    const bloggerNew = bloggers.find(b => b.id === id)
+    const url = /https?:\/\/(www\.)[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
+    if (!bloggerNew || !name || !youtubeUrl || typeof name !== 'string' || name.length > 15 ||
+        typeof youtubeUrl !== 'string' || youtubeUrl.length > 100
+        || !url.test(String(youtubeUrl).toLowerCase())) {
+        res.sendStatus(404).send({
+            errorsMessages: [{
+                message: "string",
+                field: "string"
+            }],
+        })
+    } else if (!bloggerNew) {
+        res.sendStatus(400)
+    } else {
+        bloggerNew.name = name;
+        bloggerNew.youtubeUrl = youtubeUrl;
+        res.sendStatus(204);
+    }
+})
+app.delete('/bloggers/:bloggerId', (req: Request, res: Response) => {
+    const id = req.body.bloggerId;
+
 })
 
 app.listen(port, () => {
