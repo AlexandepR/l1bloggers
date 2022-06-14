@@ -12,6 +12,7 @@ let post = [{
     id: 0, title: "string", shortDescription: "string", content: "string", bloggerId: 0, bloggerName: "string"
 }]
 app.get('/bloggers', (req: Request, res: Response) => {
+    res.send(bloggers)
     res.sendStatus(200)
 })
 app.get('/bloggers/:bloggersId', (req: Request, res: Response) => {
@@ -41,7 +42,7 @@ app.post('/bloggers', (req: Request, res: Response) => {
             )
         } else {
             const newBlogger = {
-                id: +new Date(),
+                id: +(new Date()),
                 name: name,
                 youtubeUrl: youtubeUrl
             }
