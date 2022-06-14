@@ -51,7 +51,7 @@ app.post('/bloggers', (req: Request, res: Response) => {
             res.sendStatus(201)
         }
     })
-app.post('/bloggers/:bloggersId', (req: Request, res:Response) => {
+app.put('/bloggers/:bloggersId', (req: Request, res:Response) => {
     const id = req.body.bloggerId;
 })
 
