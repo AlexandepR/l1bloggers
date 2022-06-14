@@ -28,18 +28,18 @@ app.get('/bloggers/:bloggersId', (req: Request, res: Response) => {
 app.post('/bloggers', (req: Request, res: Response) => {
         const name = req.body.name;
         const youtubeUrl = req.body.youtubeUrl;
-        // const url = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
+        const url = /https?:\/\/(www\.)[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
         if (!name || !youtubeUrl || typeof name !== 'string' || name.length > 15 ||
-            typeof youtubeUrl !== 'string' || youtubeUrl.length > 15
-            // || !url.test(String(youtubeUrl).toLowerCase())
+            typeof youtubeUrl !== 'string' || youtubeUrl.length > 100
+            || !url.test(String(youtubeUrl).toLowerCase())
         ) {
             res.sendStatus(400).send({
                     errorsMessages: [{
                         message: "string",
                         field: 'string'
                     }],
-                }
-            )
+                })
+            return
         } else {
             const newBlogger = {
                 id: +(new Date()),
@@ -47,10 +47,13 @@ app.post('/bloggers', (req: Request, res: Response) => {
                 youtubeUrl: youtubeUrl
             }
             bloggers.push(newBlogger)
+            res.send(bloggers)
             res.sendStatus(201)
         }
-    }
-)
+    })
+app.post('/bloggers/:bloggersId', (req: Request, res:Response) => {
+    const id = req.body.bloggerId;
+})
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
