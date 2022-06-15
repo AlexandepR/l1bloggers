@@ -37,7 +37,7 @@ bloggersRouter.get('/:id', (req: Request, res: Response) => {
 bloggersRouter.post('/', nameValidation, youtubeUrlValidator, inputValidationMiddleware, (req: Request, res: Response) => {
         const newBlogger = bloggersRepository.postBlogger(req.body.name, req.body.youtubeUrl);
             res.send(newBlogger)
-            res.sendStatus(201)
+            res.sendStatus(200)
     })
 bloggersRouter.put('/:id', nameValidation, youtubeUrlValidator, inputValidationMiddleware,
     (req: Request, res: Response) => {

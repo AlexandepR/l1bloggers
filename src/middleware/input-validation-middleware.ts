@@ -3,18 +3,24 @@ import {validationResult} from "express-validator";
 
 
 export const inputValidationMiddleware = (
-    req:Request, res: Response, next: NextFunction) => {
+    req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
         res.status(400)
-            res.send({
-                errorsMessages: [{
+        // .json({errors: errors.array(),})
+
+        res.send({
+            errorsMessages: [{
+                message: "string",
+                field: "youtubeUrl"
+            },
+                {
                     message: "string",
-                    field: 'string'
+                    field: "name"
                 }],
-            })
-            return
-            // .json({codeResult: 1, errors: errors.array()})
+        })
+        return
+
         //     }
         // if (!newBlogger) {
         //     res.sendStatus(400).send({
