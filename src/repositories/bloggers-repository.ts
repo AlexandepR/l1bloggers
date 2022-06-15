@@ -19,7 +19,7 @@ export const bloggersRepository = {
             youtubeUrl: youtubeUrl
         }
         bloggers.push(newBlogger)
-        return bloggers
+        return newBlogger
     },
     putBlogger (id: number, name: string, youtubeUrl: string) {
         const blogger = bloggers.find(b => b.id === id)

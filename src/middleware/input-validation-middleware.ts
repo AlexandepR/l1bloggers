@@ -7,8 +7,14 @@ export const inputValidationMiddleware = (
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
         res.status(400)
-            .json({codeResult: 1, errors: errors.array()})
-        return
+            res.send({
+                errorsMessages: [{
+                    message: "string",
+                    field: 'string'
+                }],
+            })
+            return
+            // .json({codeResult: 1, errors: errors.array()})
         //     }
         // if (!newBlogger) {
         //     res.sendStatus(400).send({
