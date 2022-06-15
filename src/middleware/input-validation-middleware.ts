@@ -6,9 +6,8 @@ export const inputValidationMiddleware = (
     req:Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-        res.status(400).json({
-            codeResult: 1,
-            errors: errors.array()})
+        res.status(400)
+            .json({codeResult: 1, errors: errors.array()})
         return
         //     }
         // if (!newBlogger) {

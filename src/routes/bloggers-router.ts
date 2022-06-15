@@ -13,7 +13,7 @@ const nameValidation = body('name')
 
 const youtubeUrlValidator = body('youtubeUrl')
     .exists().trim().notEmpty().withMessage('Please fill in the field - youtubeUrl')
-    .matches(/https?:\/\/(www\.)[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi)
+    .matches(/https?:\/\/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi)
     .withMessage('Please write correct URL')
     .isLength({ min: 0, max: 100}).withMessage('Title length should be from 0 to 100 symbols')
 
