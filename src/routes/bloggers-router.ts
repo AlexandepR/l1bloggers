@@ -9,7 +9,6 @@ let bloggers = [
     {id: 2, name: "Katya", youtubeUrl: "https://www.youtube.com/ggttr"}
 ]
 
-
 bloggersRouter.get('', (req: Request, res: Response) => {
     res.send(bloggers)
     res.sendStatus(200)
