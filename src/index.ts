@@ -1,4 +1,4 @@
-import express, {Response, Request} from 'express'
+import express, {Response, Request, NextFunction} from 'express'
 import cors from 'cors'
 import bodyParser from "body-parser";
 import {bloggersRouter} from "./routes/bloggers-router";
@@ -8,6 +8,12 @@ const app = express()
 app.use(cors())
 app.use(bodyParser.json())
 const port = process.env.PORT || 5001
+
+// const validatorMiddleware = (req: Request, res: Response, next: NextFunction) => {
+//
+// }
+// app.use(validatorMiddleware)
+
 
 app.use('/bloggers', bloggersRouter)
 app.use('/posts', postsRouter)
