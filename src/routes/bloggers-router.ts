@@ -1,17 +1,21 @@
 import {NextFunction, Request, Response, Router} from "express";
 import {bloggersRepository} from "../repositories/bloggers-repository";
 import {body, validationResult} from "express-validator";
+import {inputValidationMiddleware} from "../middleware/input-validation-middleware";
 
 
 export const bloggersRouter = Router({})
 
 
-const nameValidation = body('name').trim().isLength({
-    min: 0, max: 15
-}).withMessage('Title length should be from 0 to 15 symbols')
-const youtubeUrlValidator = body('youtubeUrl').trim().isLength({
-    min: 0, max: 100
-}).withMessage('Title length should be from 0 to 100 symbols')
+const nameValidation = body('name')
+    .exists().trim().notEmpty().withMessage('Please fill in the field - Name')
+    .isLength({min: 0, max: 15}).withMessage('Title length should be from 0 to 15 symbols')
+
+const youtubeUrlValidator = body('youtubeUrl')
+    .exists().trim().notEmpty().withMessage('Please fill in the field - youtubeUrl')
+    .matches(/https?:\/\/(www\.)[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi)
+    .withMessage('Please write correct URL')
+    .isLength({ min: 0, max: 100}).withMessage('Title length should be from 0 to 100 symbols')
 
 
 bloggersRouter.get('', (req: Request, res: Response) => {
@@ -29,19 +33,14 @@ bloggersRouter.get('/:id', (req: Request, res: Response) => {
         res.sendStatus(404)
     }
 })
-bloggersRouter.post('/',
-    nameValidation,
-    youtubeUrlValidator,
-    (req: Request, res: Response) => {
+
+bloggersRouter.post('/', nameValidation, youtubeUrlValidator, inputValidationMiddleware, (req: Request, res: Response) => {
         const newBlogger = bloggersRepository.postBlogger(req.body.name, req.body.youtubeUrl);
         // const url = /https?:\/\/(www\.)[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
         // if (!name || !youtubeUrl || typeof name !== 'string' || name.length > 15 ||
         //     typeof youtubeUrl !== 'string' || youtubeUrl.length > 100
         //     || !url.test(String(youtubeUrl).toLowerCase())
         // )
-        const errors = validationResult(req)
-        if (!errors.isEmpty()) {
-            return res.status(400).json({errors: errors.array()})
             //     }
             // if (!newBlogger) {
             //     res.sendStatus(400).send({
@@ -51,14 +50,12 @@ bloggersRouter.post('/',
             //         }],
             //     })
             //     return
-        } else {
             res.send(newBlogger)
             res.sendStatus(201)
-        }
     })
-bloggersRouter.put('/:id', (req: Request, res: Response) => {
+bloggersRouter.put('/:id', nameValidation, youtubeUrlValidator, inputValidationMiddleware,
+    (req: Request, res: Response) => {
     const blogger = bloggersRepository.putBlogger(+req.params.id, req.body.name, req.body.youtubeUrl);
-
     // const url = /https?:\/\/(www\.)[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
     // if (!bloggerNew || !name || !youtubeUrl || typeof name !== 'string' || name.length > 15 ||
     //     typeof youtubeUrl !== 'string' || youtubeUrl.length > 100
@@ -76,6 +73,7 @@ bloggersRouter.put('/:id', (req: Request, res: Response) => {
         res.sendStatus(204);
     }
 })
+
 bloggersRouter.delete('/:id', (req: Request, res: Response) => {
     const isDeleted = bloggersRepository.deleteBlogger(+req.params.id);
     if (!isDeleted) {
