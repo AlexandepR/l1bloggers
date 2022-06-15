@@ -67,9 +67,7 @@ bloggersRouter.put('/:id', nameValidation, youtubeUrlValidator, inputValidationM
                 field: "string"
             }],
         })
-    } else if (!blogger) {
-        res.sendStatus(400)
-    } else {
+    }  else {
         res.sendStatus(204);
     }
 })
