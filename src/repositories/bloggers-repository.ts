@@ -5,14 +5,14 @@ let bloggers = [
 ]
 
 export const bloggersRepository = {
-    getBloggers () {
+    getBloggers() {
         return bloggers
     },
-    getBloggerByID (id: number) {
-        const blogger = bloggers.find( b => b.id === id)
-            return blogger
+    getBloggerByID(id: number) {
+        const blogger = bloggers.find(b => b.id === id)
+        return blogger
     },
-    postBlogger (name: string, youtubeUrl: string) {
+    postBlogger(name: string, youtubeUrl: string) {
         const newBlogger = {
             id: +(new Date()),
             name: name,
@@ -21,7 +21,7 @@ export const bloggersRepository = {
         bloggers.push(newBlogger)
         return newBlogger
     },
-    putBlogger (id: number, name: string, youtubeUrl: string) {
+    putBlogger(id: number, name: string, youtubeUrl: string) {
         const blogger = bloggers.find(b => b.id === id)
         if (blogger) {
             blogger.name = name;
@@ -31,9 +31,9 @@ export const bloggersRepository = {
             return false
         }
     },
-    deleteBlogger (id: number) {
-        for( let i = 0; i < bloggers.length; i++) {
-            if ( bloggers[i].id === id) {
+    deleteBlogger(id: number) {
+        for (let i = 0; i < bloggers.length; i++) {
+            if (bloggers[i].id === id) {
                 bloggers.splice(i, 1)
                 return true
             }
