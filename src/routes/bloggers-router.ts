@@ -28,7 +28,7 @@ bloggersRouter.get('/:id', (req: Request, res: Response) => {
     const blogger = bloggersRepository.getBloggerByID(+req.params.id)
     if (blogger) {
         res.send(blogger)
-        res.sendStatus(200)
+        res.sendStatus(201)
     } else {
         res.sendStatus(404)
     }
