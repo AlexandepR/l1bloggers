@@ -11,11 +11,7 @@ export const inputValidationMiddleware = (
             errorsMessages: [{
                 message: "string",
                 field: "youtubeUrl"
-            },
-                {
-                    message: "string",
-                    field: "name"
-                }],
+            }]
         })
         return
     } else {
