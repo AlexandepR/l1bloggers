@@ -1,5 +1,6 @@
 import {NextFunction, Request, Response} from "express";
 import {validationResult} from "express-validator";
+import {youtubeUrlValidator} from "../routes/bloggers-router";
 
 
 export const inputValidationMiddleware = (
@@ -10,7 +11,7 @@ export const inputValidationMiddleware = (
         res.send({
             errorsMessages: [{
                 message: "string",
-                field: "youtubeUrl"
+                field: `${youtubeUrlValidator}`
             }]
         })
         return
