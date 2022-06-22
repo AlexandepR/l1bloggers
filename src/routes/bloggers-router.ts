@@ -8,7 +8,7 @@ export const bloggersRouter = Router({})
 
 
 export const nameValidation = body('name')
-    .trim().notEmpty().withMessage('Please fill in the field - ')
+    .trim().notEmpty().withMessage('Please fill in the field - name')
     .isLength({min: 0, max: 15}).withMessage('Title length should be from 0 to 15 symbols')
 
 export const youtubeUrlValidator = body('youtubeUrl')

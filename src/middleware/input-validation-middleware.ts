@@ -10,6 +10,8 @@ export const inputValidationMiddleware = (
         message: err.msg,
         field: err.param
     }))
+    console.log(errors)
+    console.log(errorsMessages)
     errorsMessages = errorsMessages.filter((err, index) => {
         const findIndex = errorsMessages.findIndex((innerErr => innerErr.field === err.field))
         return findIndex === index
