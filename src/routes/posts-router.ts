@@ -55,7 +55,7 @@ postsRouter.put('/:id',
         if (putPost) {
             res.status(204).send(putPost)
         } else {
-            res.status(404)
+            res.sendStatus(404)
         }
         // else (
         //     res.sendStatus(400)
