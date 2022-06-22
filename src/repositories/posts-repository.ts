@@ -1,8 +1,9 @@
 import {inputValidationMiddleware} from "../middleware/input-validation-middleware";
+import {bloggers} from "./bloggers-repository";
 
 export let posts = [
     {id: 0, title: "string1", shortDescription: "string1", content: "string1", bloggerId: 0, bloggerName: "string1"},
-    {id: 0, title: "string1", shortDescription: "string1", content: "string1", bloggerId: 0, bloggerName: "string1"},
+    {id: 0, title: "string2", shortDescription: "string2", content: "string2", bloggerId: 1, bloggerName: "string2"},
 ]
 
 export const postsRepository = {
@@ -10,38 +11,33 @@ export const postsRepository = {
         return posts
     },
     postPosts(title: string, shortDescription: string, content: string, bloggerId: number) {
-        // if (posts.find(el => el.bloggerId === bloggerId)) {
+        const blogger = bloggers.find( b => b.id === bloggerId)
+        if (blogger) {
             const newPost = {
                 id: +(new Date()),
                 title: title,
                 shortDescription: shortDescription,
                 content: content,
                 bloggerId: bloggerId,
-                bloggerName: 'new'
+                bloggerName: blogger.name
             }
             posts.push(newPost)
             return newPost
-        // } else {
-        // return( false
-            // {
-            //         errorsMessages: [{
-            //             message: "string",
-            //             field: "bloggerId"
-            //         }],
-            //     }
-            //     )
+        } else {
+        return false
         // }
         // else {
         //     inputValidationMiddleware
-        // }
+        }
     },
     getPost(id: number) {
         const post = posts.find(p => p.id === id)
         return post
     },
     putPost(id: number, title: string, shortDescription: string, content: string, bloggerId: number) {
+       const blogger = bloggers.find( bl => bl.id === bloggerId)
         const post = posts.find(p => p.id === id)
-        if (post) {
+        if (post && blogger) {
             post.title = title,
                 post.shortDescription = shortDescription,
                 post.content = content,
