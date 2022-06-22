@@ -53,8 +53,9 @@ postsRouter.put('/:id',
         const {title, shortDescription, content, bloggerId} = req.body;
         const putPost = postsRepository.putPost(id, title, shortDescription, content, bloggerId)
         if (putPost) {
-            res.status(201)
-            res.send(putPost)
+            res.status(204)
+        } else {
+            res.status(404)
         }
         // else (
         //     res.sendStatus(400)
