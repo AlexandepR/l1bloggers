@@ -32,7 +32,17 @@ postsRouter.post('/',
     (req: Request, res: Response) => {
         const {title, shortDescription, content, bloggerId} = req.body
         const newPosts = postsRepository.postPosts(title, shortDescription, content, bloggerId)
-        res.status(201).send(newPosts)
+        if (newPosts) {
+            res.status(201).send(newPosts)
+        } else {
+            res.status(400)
+            // .send({
+            //             errorsMessages: [{
+            //                 message: "string",
+            //                 field: "bloggerId"
+            //             }],
+            //         })
+        }
     })
 postsRouter.get('/:id', (req: Request, res: Response) => {
     const id = +req.params.id;

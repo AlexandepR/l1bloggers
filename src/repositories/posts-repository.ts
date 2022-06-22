@@ -1,3 +1,5 @@
+import {inputValidationMiddleware} from "../middleware/input-validation-middleware";
+
 let posts = [
     {id: 0, title: "string", shortDescription: "string", content: "string", bloggerId: 0, bloggerName: "string"},
     {id: 1, title: "kyky", shortDescription: "string", content: "string", bloggerId: 1, bloggerName: "string"},
@@ -9,16 +11,27 @@ export const postsRepository = {
         return posts
     },
     postPosts(title: string, shortDescription: string, content: string, bloggerId: number) {
-        const newPost = {
-            id: +(new Date()),
-            title: title,
-            shortDescription: shortDescription,
-            content: content,
-            bloggerId: bloggerId,
-            bloggerName: 'new'
-        }
-        posts.push(newPost)
-        return newPost
+        if (posts.find(el => el.bloggerId === bloggerId)) {
+            const newPost = {
+                id: +(new Date()),
+                title: title,
+                shortDescription: shortDescription,
+                content: content,
+                bloggerId: bloggerId,
+                bloggerName: 'new'
+            }
+            posts.push(newPost)
+            return newPost
+        } else {
+        return({
+                    errorsMessages: [{
+                        message: "string",
+                        field: "bloggerId"
+                    }],
+                })}
+        // else {
+        //     inputValidationMiddleware
+        // }
     },
     getPost(id: number) {
         const post = posts.find(p => p.id === id)
