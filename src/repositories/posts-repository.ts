@@ -35,9 +35,9 @@ export const postsRepository = {
         return post
     },
     putPost(id: number, title: string, shortDescription: string, content: string, bloggerId: number) {
-       const blogger = bloggers.find( bl => bl.id === bloggerId)
+
         const post = posts.find(p => p.id === id)
-        if (post && blogger) {
+        if (post) {
             post.title = title,
                 post.shortDescription = shortDescription,
                 post.content = content,

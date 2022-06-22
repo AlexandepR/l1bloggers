@@ -2,7 +2,7 @@ import {Request, Response, Router} from "express";
 import {postsRepository} from "../repositories/posts-repository";
 import {body, param} from "express-validator";
 import {inputValidationMiddleware} from "../middleware/input-validation-middleware";
-import {bloggersRepository} from "../repositories/bloggers-repository";
+import {bloggers, bloggersRepository} from "../repositories/bloggers-repository";
 
 
 export const postsRouter = Router({})
@@ -62,16 +62,19 @@ postsRouter.put('/:id',
         const id = +req.params.id;
         const {title, shortDescription, content, bloggerId} = req.body;
         const putPost = postsRepository.putPost(id, title, shortDescription, content, bloggerId)
-        if (putPost) {
-            res.status(204).send(putPost)
-        } else {
-            res.status(400)
+        const blogger = bloggersRepository.getBloggerByID(bloggerId)
+        if(blogger) {
+            return res.status(400)
                 .send({
                     errorsMessages: [{
                         message: "Should be correct ID",
                         field: "bloggerId"
                     }],
-                })
+                })}
+        if (putPost) {
+            res.status(204).send(putPost)
+        } else {
+            res.status(404)
         }
         // else (
         //     res.sendStatus(400)

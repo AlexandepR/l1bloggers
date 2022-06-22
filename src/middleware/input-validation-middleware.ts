@@ -6,7 +6,7 @@ import {youtubeUrlValidator} from "../routes/bloggers-router";
 export const inputValidationMiddleware = (
     req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req)
-    let errorsMessages = errors.array().map(err => ({
+    let errorsMessages = errors.array({onlyFirstError: true}).map(err => ({
         message: err.msg,
         field: err.param
     }))
