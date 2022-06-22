@@ -1,4 +1,4 @@
-let bloggers = [
+export let bloggers = [
     {id: 0, name: "Petya", youtubeUrl: "https://www.youtube.com/uOWp8HU"},
     {id: 1, name: "Vasya", youtubeUrl: "https://www.youtube.com/uO00tr"},
     {id: 2, name: "Katya", youtubeUrl: "https://www.youtube.com/ggttr"}

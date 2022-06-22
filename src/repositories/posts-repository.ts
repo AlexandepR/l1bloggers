@@ -1,9 +1,8 @@
 import {inputValidationMiddleware} from "../middleware/input-validation-middleware";
 
-let posts = [
-    {id: 0, title: "string", shortDescription: "string", content: "string", bloggerId: 0, bloggerName: "string"},
-    {id: 1, title: "kyky", shortDescription: "string", content: "string", bloggerId: 1, bloggerName: "string"},
-    {id: 2, title: "goodBye", shortDescription: "string", content: "string", bloggerId: 2, bloggerName: "string"},
+export let posts = [
+    {id: 0, title: "string1", shortDescription: "string1", content: "string1", bloggerId: 0, bloggerName: "string1"},
+    {id: 0, title: "string1", shortDescription: "string1", content: "string1", bloggerId: 0, bloggerName: "string1"},
 ]
 
 export const postsRepository = {
@@ -11,7 +10,7 @@ export const postsRepository = {
         return posts
     },
     postPosts(title: string, shortDescription: string, content: string, bloggerId: number) {
-        if (posts.find(el => el.bloggerId === bloggerId)) {
+        // if (posts.find(el => el.bloggerId === bloggerId)) {
             const newPost = {
                 id: +(new Date()),
                 title: title,
@@ -22,16 +21,16 @@ export const postsRepository = {
             }
             posts.push(newPost)
             return newPost
-        } else {
-        return( false
+        // } else {
+        // return( false
             // {
             //         errorsMessages: [{
             //             message: "string",
             //             field: "bloggerId"
             //         }],
             //     }
-                )
-        }
+            //     )
+        // }
         // else {
         //     inputValidationMiddleware
         // }
