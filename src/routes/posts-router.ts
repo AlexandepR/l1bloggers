@@ -38,7 +38,7 @@ postsRouter.post('/',
             res.status(400)
             .send({
                         errorsMessages: [{
-                            message: "string",
+                            message: "Should be correct ID",
                             field: "bloggerId"
                         }],
                     })

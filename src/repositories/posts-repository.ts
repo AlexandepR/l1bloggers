@@ -11,7 +11,7 @@ export const postsRepository = {
         return posts
     },
     postPosts(title: string, shortDescription: string, content: string, bloggerId: number) {
-        if (posts.find(el => el.bloggerId !== bloggerId)) {
+        if (posts.find(el => el.bloggerId === bloggerId)) {
             const newPost = {
                 id: +(new Date()),
                 title: title,
