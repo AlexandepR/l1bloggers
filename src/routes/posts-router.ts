@@ -65,7 +65,13 @@ postsRouter.put('/:id',
         if (putPost) {
             res.status(204).send(putPost)
         } else {
-            res.sendStatus(404)
+            res.status(400)
+                .send({
+                    errorsMessages: [{
+                        message: "Should be correct ID",
+                        field: "bloggerId"
+                    }],
+                })
         }
         // else (
         //     res.sendStatus(400)
