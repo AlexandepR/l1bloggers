@@ -9,10 +9,10 @@ export const inputValidationMiddleware = (
     if (!errors.isEmpty()) {
         res.status(400)
         res.send({
-            errorsMessages: [{
-                message: "string",
-                field: 'string'
-            }]
+            errorsMessages: errors.array().map(err => ({
+                message: err.msg,
+                field: err.location
+            }))
         })
         return
     } else {
