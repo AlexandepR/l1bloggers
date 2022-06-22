@@ -65,7 +65,7 @@ postsRouter.put('/:id',
         const blogger = bloggersRepository.getBloggerByID(bloggerId)
         if (!blogger) {
             return res.status(400)
-                .send({
+                .send({ 
                     errorsMessages: [{
                         message: "Should be correct ID",
                         field: "bloggerId"
