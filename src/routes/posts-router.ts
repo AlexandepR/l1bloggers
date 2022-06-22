@@ -6,18 +6,18 @@ import {bloggersRepository} from "../repositories/bloggers-repository";
 
 
 export const postsRouter = Router({})
-    const titleValidation = body('title')
-        .trim().exists().notEmpty().withMessage('Please fill in the field - Title')
-        .isLength({min: 0 , max: 30}).withMessage('Title length should be from 0 to 30 symbols')
-    const shortDescriptionValidation = body('shortDescription')
-        .trim().exists().notEmpty().withMessage('Please fill in the field - shortDescription')
-        .isLength({min: 0, max: 100}).withMessage('shortDescription length should be from 0 to 100 symbols')
-    const contentValidation = body('content')
-        .trim().exists().notEmpty().withMessage('Please fill in the field - content')
-        .isLength({min: 0, max: 1000}).withMessage('content length should be from 0 to 1000 symbols')
-const bloggerIdValidation = param('id', 'blogger doesnt exist')
-    .toInt()
-    .custom(id => bloggersRepository.getBloggerByID(id))
+const titleValidation = body('title')
+    .trim().exists().notEmpty().withMessage('Please fill in the field - Title')
+    .isLength({min: 0, max: 30}).withMessage('Title length should be from 0 to 30 symbols')
+const shortDescriptionValidation = body('shortDescription')
+    .trim().exists().notEmpty().withMessage('Please fill in the field - shortDescription')
+    .isLength({min: 0, max: 100}).withMessage('shortDescription length should be from 0 to 100 symbols')
+const contentValidation = body('content')
+    .trim().exists().notEmpty().withMessage('Please fill in the field - content')
+    .isLength({min: 0, max: 1000}).withMessage('content length should be from 0 to 1000 symbols')
+// const bloggerIdValidation = param('id', 'invalid id')
+//     .toInt()
+//     .custom(id => bloggersRepository.getBloggerByID(id))
 
 postsRouter.get('/', (req: Request, res: Response) => {
     const posts = postsRepository.getPosts()
@@ -28,13 +28,12 @@ postsRouter.post('/',
     titleValidation,
     shortDescriptionValidation,
     contentValidation,
-    bloggerIdValidation,
     inputValidationMiddleware,
     (req: Request, res: Response) => {
-    const {title, shortDescription, content, bloggerId} = req.body
-    const newPosts = postsRepository.postPosts(title, shortDescription, content, bloggerId)
-            res.status(201).send(newPosts)
-})
+        const {title, shortDescription, content, bloggerId} = req.body
+        const newPosts = postsRepository.postPosts(title, shortDescription, content, bloggerId)
+        res.status(201).send(newPosts)
+    })
 postsRouter.get('/:id', (req: Request, res: Response) => {
     const id = +req.params.id;
     const post = postsRepository.getPost(id)
@@ -48,12 +47,11 @@ postsRouter.put('/:id',
     titleValidation,
     shortDescriptionValidation,
     contentValidation,
-    bloggerIdValidation,
     inputValidationMiddleware,
     (req: Request, res: Response) => {
-    const id = +req.params.id;
-    const {title, shortDescription, content, bloggerId} = req.body;
-    const putPost = postsRepository.putPost(id, title, shortDescription, content, bloggerId)
+        const id = +req.params.id;
+        const {title, shortDescription, content, bloggerId} = req.body;
+        const putPost = postsRepository.putPost(id, title, shortDescription, content, bloggerId)
         if (putPost) {
             res.status(201)
             // res.send(putPost)
@@ -61,17 +59,17 @@ postsRouter.put('/:id',
         // else (
         //     res.sendStatus(400)
         // )
-    // if (!putPost) {
-    //     res.sendStatus(404).send({
-    //         errorsMessages: [{
-    //             message: "string",
-    //             field: "string"
-    //         }],
-    //     })
-    // } else {
-    //     res.sendStatus(204);
-    // }
-})
+        // if (!putPost) {
+        //     res.sendStatus(404).send({
+        //         errorsMessages: [{
+        //             message: "string",
+        //             field: "string"
+        //         }],
+        //     })
+        // } else {
+        //     res.sendStatus(204);
+        // }
+    })
 postsRouter.delete('/:id', (req: Request, res: Response) => {
     const id = +req.params.id
     const isDel = postsRepository.delPost(id)
