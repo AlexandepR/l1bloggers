@@ -17,7 +17,7 @@ export const postsRouter = Router({})
 postsRouter.get('/', (req: Request, res: Response) => {
     const posts = postsRepository.getPosts()
     res.send(posts)
-    res.sendStatus(200)
+    res.sendStatus(201)
 })
 postsRouter.post('/',
     titleValidation,
