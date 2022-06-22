@@ -8,11 +8,11 @@ export const bloggersRouter = Router({})
 
 
 export const nameValidation = body('name')
-    .exists().trim()
+    .trim().notEmpty().withMessage('Please fill in the field - ')
     .isLength({min: 0, max: 15}).withMessage('Title length should be from 0 to 15 symbols')
 
 export const youtubeUrlValidator = body('youtubeUrl')
-    .exists().trim().notEmpty().withMessage('Please fill in the field - youtubeUrl')
+    .trim().notEmpty().withMessage('Please fill in the field - youtubeUrl')
     .matches("^https:\/\/([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$")
     .withMessage('Please write correct URL')
     .isLength({min: 0, max: 100}).withMessage('Title length should be from 0 to 100 symbols')
