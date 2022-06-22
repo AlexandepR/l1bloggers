@@ -26,15 +26,16 @@ postsRouter.post('/',
     (req: Request, res: Response) => {
     const {title, shortDescription, content, bloggerId} = req.body
     const newPosts = postsRepository.postPosts(title, shortDescription, content, bloggerId)
-    res.send(newPosts)
-    res.sendStatus(201)
+        if(title && shortDescription && content && bloggerId) {
+            res.status(201).send(newPosts)
+        }
+            res.sendStatus(400)
 })
 postsRouter.get('/:id', (req: Request, res: Response) => {
     const id = +req.params.id;
     const post = postsRepository.getPost(id)
     if (post) {
-        res.send(post)
-        res.sendStatus(201)
+        res.status(201).send(post)
     } else {
         res.sendStatus(404)
     }
