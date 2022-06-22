@@ -36,12 +36,12 @@ postsRouter.post('/',
             res.status(201).send(newPosts)
         } else {
             res.status(400)
-            // .send({
-            //             errorsMessages: [{
-            //                 message: "string",
-            //                 field: "bloggerId"
-            //             }],
-            //         })
+            .send({
+                        errorsMessages: [{
+                            message: "string",
+                            field: "bloggerId"
+                        }],
+                    })
         }
     })
 postsRouter.get('/:id', (req: Request, res: Response) => {

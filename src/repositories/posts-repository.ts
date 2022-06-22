@@ -23,12 +23,15 @@ export const postsRepository = {
             posts.push(newPost)
             return newPost
         } else {
-        return({
-                    errorsMessages: [{
-                        message: "string",
-                        field: "bloggerId"
-                    }],
-                })}
+        return( false
+            // {
+            //         errorsMessages: [{
+            //             message: "string",
+            //             field: "bloggerId"
+            //         }],
+            //     }
+                )
+        }
         // else {
         //     inputValidationMiddleware
         // }
