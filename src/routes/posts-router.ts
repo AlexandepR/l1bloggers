@@ -1,6 +1,7 @@
 import {Request, Response, Router} from "express";
 import {postsRepository} from "../repositories/posts-repository";
 import {body} from "express-validator";
+import {inputValidationMiddleware} from "../middleware/input-validation-middleware";
 
 
 export const postsRouter = Router({})
@@ -23,6 +24,7 @@ postsRouter.post('/',
     titleValidation,
     shortDescriptionValidation,
     contentValidation,
+    inputValidationMiddleware,
     (req: Request, res: Response) => {
     const {title, shortDescription, content, bloggerId} = req.body
     const newPosts = postsRepository.postPosts(title, shortDescription, content, bloggerId)
@@ -43,7 +45,9 @@ postsRouter.get('/:id', (req: Request, res: Response) => {
 postsRouter.put('/:id',
     titleValidation,
     shortDescriptionValidation,
-    contentValidation, (req: Request, res: Response) => {
+    contentValidation,
+    inputValidationMiddleware,
+    (req: Request, res: Response) => {
     const id = +req.params.id;
     const {title, shortDescription, content, bloggerId} = req.body;
     const putPost = postsRepository.putPost(id, title, shortDescription, content, bloggerId)
