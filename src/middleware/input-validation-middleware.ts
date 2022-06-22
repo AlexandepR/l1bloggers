@@ -11,8 +11,8 @@ export const inputValidationMiddleware = (
         res.send({
             errorsMessages: errors.array().map(err => ({
                 message: err.msg,
-                field: err.location
-            }))
+                field: err.param
+            })) 
         })
         return
     } else {
