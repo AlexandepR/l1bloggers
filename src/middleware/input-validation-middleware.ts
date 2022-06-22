@@ -11,7 +11,7 @@ export const inputValidationMiddleware = (
         res.send({
             errorsMessages: [{
                 message: "string",
-                field: `${youtubeUrlValidator}`
+                field: 'string'
             }]
         })
         return
