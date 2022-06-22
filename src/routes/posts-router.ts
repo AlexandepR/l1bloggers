@@ -27,7 +27,7 @@ postsRouter.post('/',
     const {title, shortDescription, content, bloggerId} = req.body
     const newPosts = postsRepository.postPosts(title, shortDescription, content, bloggerId)
         if(title && shortDescription && content && bloggerId) {
-            res.status(200).send(newPosts)
+            res.status(201).send(newPosts)
         }
             res.sendStatus(400)
 })
