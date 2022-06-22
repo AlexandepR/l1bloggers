@@ -1,7 +1,8 @@
 import {Request, Response, Router} from "express";
 import {postsRepository} from "../repositories/posts-repository";
-import {body} from "express-validator";
+import {body, param} from "express-validator";
 import {inputValidationMiddleware} from "../middleware/input-validation-middleware";
+import {bloggersRepository} from "../repositories/bloggers-repository";
 
 
 export const postsRouter = Router({})
@@ -14,6 +15,9 @@ export const postsRouter = Router({})
     const contentValidation = body('content')
         .trim().exists().notEmpty().withMessage('Please fill in the field - content')
         .isLength({min: 0, max: 1000}).withMessage('content length should be from 0 to 1000 symbols')
+const bloggerIdValidation = param('id', 'blogger doesnt exist')
+    .toInt()
+    .custom(id => bloggersRepository.getBloggerByID(id))
 
 postsRouter.get('/', (req: Request, res: Response) => {
     const posts = postsRepository.getPosts()
@@ -24,14 +28,12 @@ postsRouter.post('/',
     titleValidation,
     shortDescriptionValidation,
     contentValidation,
+    bloggerIdValidation,
     inputValidationMiddleware,
     (req: Request, res: Response) => {
     const {title, shortDescription, content, bloggerId} = req.body
     const newPosts = postsRepository.postPosts(title, shortDescription, content, bloggerId)
-        if(title && shortDescription && content && bloggerId) {
             res.status(201).send(newPosts)
-        }
-            res.sendStatus(400)
 })
 postsRouter.get('/:id', (req: Request, res: Response) => {
     const id = +req.params.id;
@@ -46,22 +48,29 @@ postsRouter.put('/:id',
     titleValidation,
     shortDescriptionValidation,
     contentValidation,
+    bloggerIdValidation,
     inputValidationMiddleware,
     (req: Request, res: Response) => {
     const id = +req.params.id;
     const {title, shortDescription, content, bloggerId} = req.body;
     const putPost = postsRepository.putPost(id, title, shortDescription, content, bloggerId)
-
-    if (!putPost) {
-        res.sendStatus(404).send({
-            errorsMessages: [{
-                message: "string",
-                field: "string"
-            }],
-        })
-    } else {
-        res.sendStatus(204);
-    }
+        if (putPost) {
+            res.status(201)
+            // res.send(putPost)
+        }
+        // else (
+        //     res.sendStatus(400)
+        // )
+    // if (!putPost) {
+    //     res.sendStatus(404).send({
+    //         errorsMessages: [{
+    //             message: "string",
+    //             field: "string"
+    //         }],
+    //     })
+    // } else {
+    //     res.sendStatus(204);
+    // }
 })
 postsRouter.delete('/:id', (req: Request, res: Response) => {
     const id = +req.params.id
