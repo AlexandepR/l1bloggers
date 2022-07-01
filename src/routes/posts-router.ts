@@ -1,8 +1,8 @@
 import {Request, Response, Router} from "express";
 import {postsRepository} from "../repositories/posts-repository";
-import {body, param} from "express-validator";
+import {body} from "express-validator";
 import {inputValidationMiddleware} from "../middleware/input-validation-middleware";
-import {bloggers, bloggersRepository} from "../repositories/bloggers-repository";
+import {bloggersRepository} from "../repositories/bloggers-repository";
 
 
 export const postsRouter = Router({})
@@ -15,9 +15,6 @@ const shortDescriptionValidation = body('shortDescription')
 const contentValidation = body('content')
     .trim().exists().notEmpty().withMessage('Please fill in the field - content')
     .isLength({min: 0, max: 1000}).withMessage('content length should be from 0 to 1000 symbols')
-// const bloggerIdValidation = param('id', 'invalid id')
-//     .toInt()
-//     .custom(id => bloggersRepository.getBloggerByID(id))
 
 postsRouter.get('/', (req: Request, res: Response) => {
     const posts = postsRepository.getPosts()

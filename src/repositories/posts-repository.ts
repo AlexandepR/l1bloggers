@@ -1,4 +1,3 @@
-import {inputValidationMiddleware} from "../middleware/input-validation-middleware";
 import {bloggers} from "./bloggers-repository";
 
 export let posts = [
@@ -25,9 +24,6 @@ export const postsRepository = {
             return newPost
         } else {
         return false
-        // }
-        // else {
-        //     inputValidationMiddleware
         }
     },
     getPost(id: number) {
