@@ -19,7 +19,7 @@ export const youtubeUrlValidator = body('youtubeUrl')
     .isLength({min: 0, max: 100}).withMessage('Title length should be from 0 to 100 symbols')
 
 
-bloggersRouter.get('',authMiddleware, (req: Request, res: Response) => {
+bloggersRouter.get('', (req: Request, res: Response) => {
     const bloggers = bloggersRepository.getBloggers()
     if (bloggers) {
         res.send(bloggers)
@@ -32,7 +32,7 @@ bloggersRouter.get('',authMiddleware, (req: Request, res: Response) => {
 
 })
 
-bloggersRouter.get('/:id', authMiddleware,(req: Request, res: Response) => {
+bloggersRouter.get('/:id', (req: Request, res: Response) => {
     const blogger = bloggersRepository.getBloggerByID(+req.params.id)
     if (blogger) {
         res.status(200).send(blogger)
