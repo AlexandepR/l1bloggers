@@ -2,6 +2,7 @@ import {NextFunction, Request, Response, Router} from "express";
 import {bloggersRepository} from "../repositories/bloggers-repository";
 import {body, validationResult} from "express-validator";
 import {inputValidationMiddleware} from "../middleware/input-validation-middleware";
+import {authMiddleware} from "../middleware/auth-middleware";
 
 
 export const bloggersRouter = Router({})
@@ -18,7 +19,7 @@ export const youtubeUrlValidator = body('youtubeUrl')
     .isLength({min: 0, max: 100}).withMessage('Title length should be from 0 to 100 symbols')
 
 
-bloggersRouter.get('', (req: Request, res: Response) => {
+bloggersRouter.get('',authMiddleware, (req: Request, res: Response) => {
     const bloggers = bloggersRepository.getBloggers()
     if (bloggers) {
         res.send(bloggers)
@@ -31,7 +32,7 @@ bloggersRouter.get('', (req: Request, res: Response) => {
 
 })
 
-bloggersRouter.get('/:id', (req: Request, res: Response) => {
+bloggersRouter.get('/:id', authMiddleware,(req: Request, res: Response) => {
     const blogger = bloggersRepository.getBloggerByID(+req.params.id)
     if (blogger) {
         res.status(200).send(blogger)
@@ -40,7 +41,7 @@ bloggersRouter.get('/:id', (req: Request, res: Response) => {
     }
 })
 
-bloggersRouter.post('/', nameValidation, youtubeUrlValidator, inputValidationMiddleware, (req: Request, res: Response) => {
+bloggersRouter.post('/',authMiddleware, nameValidation, youtubeUrlValidator, inputValidationMiddleware, (req: Request, res: Response) => {
     const newBlogger = bloggersRepository.postBlogger(req.body.name, req.body.youtubeUrl);
     if (newBlogger) {
         res.status(201)
@@ -50,7 +51,7 @@ bloggersRouter.post('/', nameValidation, youtubeUrlValidator, inputValidationMid
     )
 })
 
-bloggersRouter.put('/:id', nameValidation, youtubeUrlValidator, inputValidationMiddleware,
+bloggersRouter.put('/:id',authMiddleware, nameValidation, youtubeUrlValidator, inputValidationMiddleware,
     (req: Request, res: Response) => {
         const blogger = bloggersRepository.putBlogger(+req.params.id, req.body.name?.trim(), req.body.youtubeUrl?.trim());
         if (!blogger) {
@@ -65,7 +66,7 @@ bloggersRouter.put('/:id', nameValidation, youtubeUrlValidator, inputValidationM
         }
     })
 
-bloggersRouter.delete('/:id', (req: Request, res: Response) => {
+bloggersRouter.delete('/:id',authMiddleware, (req: Request, res: Response) => {
     const isDeleted = bloggersRepository.deleteBlogger(+req.params.id);
     if (!isDeleted) {
         res.sendStatus(404)

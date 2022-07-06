@@ -3,6 +3,7 @@ import {postsRepository} from "../repositories/posts-repository";
 import {body} from "express-validator";
 import {inputValidationMiddleware} from "../middleware/input-validation-middleware";
 import {bloggersRepository} from "../repositories/bloggers-repository";
+import {authMiddleware} from "../middleware/auth-middleware";
 
 
 export const postsRouter = Router({})
@@ -16,12 +17,13 @@ const contentValidation = body('content')
     .trim().exists().notEmpty().withMessage('Please fill in the field - content')
     .isLength({min: 0, max: 1000}).withMessage('content length should be from 0 to 1000 symbols')
 
-postsRouter.get('/', (req: Request, res: Response) => {
+postsRouter.get('/',authMiddleware, (req: Request, res: Response) => {
     const posts = postsRepository.getPosts()
     res.send(posts)
     res.sendStatus(201)
 })
 postsRouter.post('/',
+    authMiddleware,
     titleValidation,
     shortDescriptionValidation,
     contentValidation,
@@ -41,7 +43,7 @@ postsRouter.post('/',
                     })
         }
     })
-postsRouter.get('/:id', (req: Request, res: Response) => {
+postsRouter.get('/:id',authMiddleware, (req: Request, res: Response) => {
     const id = +req.params.id;
     const post = postsRepository.getPost(id)
     if (post) {
@@ -51,6 +53,7 @@ postsRouter.get('/:id', (req: Request, res: Response) => {
     }
 })
 postsRouter.put('/:id',
+    authMiddleware,
     titleValidation,
     shortDescriptionValidation,
     contentValidation,
@@ -87,7 +90,7 @@ postsRouter.put('/:id',
         //     res.sendStatus(204);
         // }
     })
-postsRouter.delete('/:id', (req: Request, res: Response) => {
+postsRouter.delete('/:id',authMiddleware, (req: Request, res: Response) => {
     const id = +req.params.id
     const isDel = postsRepository.delPost(id)
     if (!isDel) {
