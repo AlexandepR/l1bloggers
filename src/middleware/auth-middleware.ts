@@ -9,7 +9,7 @@ const auth = {
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const bearerHeader = req.headers['authorization'];
-    if (bearerHeader) {
+    if (typeof bearerHeader !== 'undefined') {
         res.status(400).send('Bearer')
         return
     }
