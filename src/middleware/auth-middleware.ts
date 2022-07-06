@@ -14,7 +14,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
        return  next()
     }
      else {
-        res.status(400).send('Authorization error')
+        res.status(401).send('Authorization error')
     }
 }
 
