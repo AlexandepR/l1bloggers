@@ -41,7 +41,7 @@ bloggersRouter.get('/:id', authMiddleware,(req: Request, res: Response) => {
     }
 })
 
-bloggersRouter.post('/',authMiddleware, nameValidation, youtubeUrlValidator, inputValidationMiddleware, (req: Request, res: Response) => {
+bloggersRouter.post('/', nameValidation, youtubeUrlValidator, inputValidationMiddleware,authMiddleware, (req: Request, res: Response) => {
     const newBlogger = bloggersRepository.postBlogger(req.body.name, req.body.youtubeUrl);
     if (newBlogger) {
         res.status(201)
@@ -51,7 +51,7 @@ bloggersRouter.post('/',authMiddleware, nameValidation, youtubeUrlValidator, inp
     )
 })
 
-bloggersRouter.put('/:id',authMiddleware, nameValidation, youtubeUrlValidator, inputValidationMiddleware,
+bloggersRouter.put('/:id', nameValidation, youtubeUrlValidator, inputValidationMiddleware, authMiddleware,
     (req: Request, res: Response) => {
         const blogger = bloggersRepository.putBlogger(+req.params.id, req.body.name?.trim(), req.body.youtubeUrl?.trim());
         if (!blogger) {
