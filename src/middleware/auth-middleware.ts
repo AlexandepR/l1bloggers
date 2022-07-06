@@ -3,7 +3,7 @@ import {validationResult} from "express-validator";
 import {youtubeUrlValidator} from "../routes/bloggers-router";
 
 const auth = {
-    login: 'Alex', password: 'qwerty'
+    login: 'admin', password: 'qwerty'
 }
 
 
