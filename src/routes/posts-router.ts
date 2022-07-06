@@ -17,7 +17,7 @@ const contentValidation = body('content')
     .trim().exists().notEmpty().withMessage('Please fill in the field - content')
     .isLength({min: 0, max: 1000}).withMessage('content length should be from 0 to 1000 symbols')
 
-postsRouter.get('/',authMiddleware, (req: Request, res: Response) => {
+postsRouter.get('/', (req: Request, res: Response) => {
     const posts = postsRepository.getPosts()
     res.send(posts)
     res.sendStatus(201)
@@ -43,7 +43,7 @@ postsRouter.post('/',
                     })
         }
     })
-postsRouter.get('/:id',authMiddleware, (req: Request, res: Response) => {
+postsRouter.get('/:id', (req: Request, res: Response) => {
     const id = +req.params.id;
     const post = postsRepository.getPost(id)
     if (post) {
