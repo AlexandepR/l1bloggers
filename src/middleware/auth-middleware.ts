@@ -8,6 +8,11 @@ const auth = {
 
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+    const bearerHeader = req.headers['authorization'];
+    if (bearerHeader) {
+        res.status(400).send('Bearer')
+        return
+    }
     const b64auth = (req.headers.authorization || '').split(' ')[1] || ''
     const [login, password] = Buffer.from(b64auth, 'base64').toString().split(':')
     if (login && password && login === auth.login && password === auth.password) {
@@ -17,6 +22,22 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
         res.status(401).send('Authorization error')
     }
 }
+
+
+
+// function isAuthenticated(req, res, next) {
+//     const bearerHeader = req.headers['authorization'];
+//
+//     if (bearerHeader) {
+//         const bearer = bearerHeader.split(' ');
+//         const bearerToken = bearer[1];
+//         req.token = bearerToken;
+//         next();
+//     } else {
+//         // Forbidden
+//         res.status(500).json({ error: "Not Authorized" });
+//     }
+// }
 
 
 // var user = auth(req);
