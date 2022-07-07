@@ -8,20 +8,48 @@ const auth = {
 
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    const bearerHeader = req.headers['authorization'];
-    if (typeof bearerHeader !== 'undefined') {
-        res.status(400).send('Bearer')
-        return
-    }
+    // const bearerHeader = req.headers['authorization'];
+    // if (typeof bearerHeader !== 'undefined') {
+    //     res.status(400).send('Bearer')
+    //     return
+    // }
+
     const b64auth = (req.headers.authorization || '').split(' ')[1] || ''
     const [login, password] = Buffer.from(b64auth, 'base64').toString().split(':')
-    if (login && password && login === auth.login && password === auth.password) {
+    const isBasic64 = (req.headers.authorization || '').split(' ')[0]
+    if (login && password && login === auth.login && password === auth.password && isBasic64 === 'Basic') {
        return  next()
+    } else if (isBasic64 !== 'Basic') {
+        res.status(400).send('It\'s not Basic')
     }
      else {
         res.status(401).send('Authorization error')
     }
 }
+
+    //
+    // const str = (req.headers.authorization || '')
+    // const bearerHeader = (req.headers['authorization'] || '')
+    // const bearer = bearerHeader.split(' ');
+    // const typeToken = bearer[0]
+    // const b64 = Buffer.from(str, 'base64').toString('base64')
+    // if (typeToken !== 'Basic') {
+    //     console.log('ok')
+    // } else {
+    //     console.log('error')
+    // }
+
+    // const b64auth = (req.headers.authorization || '').split(' ')[1] || ''
+    // const isBase64 = Buffer.from(b64auth, 'base64').toString('base64')
+    // if ( isBase64 === b64auth) {
+    //     console.log('ok')
+    // } else {
+    //     console.log('no')
+    // }
+// }
+
+
+
 
 
 
