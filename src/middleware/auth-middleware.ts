@@ -19,9 +19,10 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
     const isBasic64 = (req.headers.authorization || '').split(' ')[0]
     if (login && password && login === auth.login && password === auth.password && isBasic64 === 'Basic') {
        return  next()
-    } else if (isBasic64 !== 'Basic') {
-        res.status(400).send('It\'s not Basic')
     }
+    // else if (isBasic64 !== 'Basic') {
+    //     res.status(400).send('It\'s not Basic')
+    // }
      else {
         res.status(401).send('Authorization error')
     }
