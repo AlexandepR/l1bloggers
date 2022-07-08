@@ -27,9 +27,7 @@ bloggersRouter.get('', (req: Request, res: Response) => {
     } else (
         res.sendStatus(400)
     )
-
     //     res.sendStatus(201).send(bloggers)
-
 })
 
 bloggersRouter.get('/:id', (req: Request, res: Response) => {
