@@ -3,16 +3,32 @@ export let bloggers = [
     {id: 1, name: "Vasya", youtubeUrl: "https://www.youtube.com/uO00tr"},
     {id: 2, name: "Katya", youtubeUrl: "https://www.youtube.com/ggttr"}
 ]
+type bloggersType = {
+    id: number
+    name: string
+    youtubeUrl: string
+}
 
 export const bloggersRepository = {
-    getBloggers() {
+    async getBloggers(): Promise<bloggersType[]> {
+    // async getBloggers(name: string | null | undefined): Promise<bloggersType[]> {
+    //     if (name) {
+    //         let filteredBloggers = bloggers.filter(b => b.name.indexOf(name) > -1)
+    //         return filteredBloggers
+    //     } else {
+    //         return bloggers
+    //     }
         return bloggers
     },
-    getBloggerByID(id: number) {
+    async getBloggerByID(id: number): Promise<bloggersType | null> {
         const blogger = bloggers.find(b => b.id === id)
-        return blogger
+        if(blogger) {
+            return blogger
+        } else {
+            return null
+        }
     },
-    postBlogger(name: string, youtubeUrl: string) {
+    async postBlogger(name: string, youtubeUrl: string): Promise<bloggersType> {
         const newBlogger = {
             id: +(new Date()),
             name: name,
@@ -21,7 +37,7 @@ export const bloggersRepository = {
         bloggers.push(newBlogger)
         return newBlogger
     },
-    putBlogger(id: number, name: string, youtubeUrl: string) {
+    async putBlogger(id: number, name: string, youtubeUrl: string): Promise<boolean> {
         const blogger = bloggers.find(b => b.id === id)
         if (blogger) {
             blogger.name = name;
@@ -31,7 +47,7 @@ export const bloggersRepository = {
             return false
         }
     },
-    deleteBlogger(id: number) {
+    async deleteBlogger(id: number): Promise<boolean> {
         for (let i = 0; i < bloggers.length; i++) {
             if (bloggers[i].id === id) {
                 bloggers.splice(i, 1)

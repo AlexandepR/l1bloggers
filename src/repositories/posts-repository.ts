@@ -1,4 +1,4 @@
-import {bloggers} from "./bloggers-repository";
+import {bloggers} from "./bloggers-db-repository";
 
 export let posts = [
     {id: 0, title: "string1", shortDescription: "string1", content: "string1", bloggerId: 0, bloggerName: "string1"},
