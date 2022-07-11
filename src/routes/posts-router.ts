@@ -2,7 +2,7 @@ import {Request, Response, Router} from "express";
 import {postsRepository} from "../repositories/posts-repository";
 import {body} from "express-validator";
 import {inputValidationMiddleware} from "../middleware/input-validation-middleware";
-import {bloggersDbRepository} from "../repositories/bloggers-db-repository";
+import {bloggersRepository} from "../repositories/bloggers-db-repository";
 import {authMiddleware} from "../middleware/auth-middleware";
 
 
@@ -62,7 +62,7 @@ postsRouter.put('/:id',
         const id = +req.params.id;
         const {title, shortDescription, content, bloggerId} = req.body;
         const putPost = postsRepository.putPost(id, title, shortDescription, content, bloggerId)
-        const blogger = bloggersDbRepository.getBloggerByID(bloggerId)
+        const blogger = bloggersRepository.getBloggerByID(bloggerId)
         if (!blogger) {
             return res.status(400)
                 .send({

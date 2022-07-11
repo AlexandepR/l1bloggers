@@ -1,4 +1,4 @@
-import {bloggers} from "./bloggers-db-repository";
+import {__bloggers} from "./bloggers-db-repository";
 
 export let posts = [
     {id: 0, title: "string1", shortDescription: "string1", content: "string1", bloggerId: 0, bloggerName: "string1"},
@@ -10,7 +10,7 @@ export const postsRepository = {
         return posts
     },
     postPosts(title: string, shortDescription: string, content: string, bloggerId: number) {
-        const blogger = bloggers.find( b => b.id === bloggerId)
+        const blogger = __bloggers.find(b => b.id === bloggerId)
         if (blogger) {
             const newPost = {
                 id: +(new Date()),
