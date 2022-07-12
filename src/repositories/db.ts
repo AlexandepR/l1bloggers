@@ -1,8 +1,16 @@
 import {MongoClient} from 'mongodb'
 
+export type bloggersType = {
+    id: number
+    name: string
+    youtubeUrl: string
+}
+
 const mongoUri = process.env.mongoURI || "mongodb://0.0.0.0:27017"
 
-export const client = new MongoClient(mongoUri);
+const client = new MongoClient(mongoUri);
+const db = client.db("allBloggers");
+export const collectionBloggers = db.collection<bloggersType>("bloggers");
 
 export async function runDb() {
         try {

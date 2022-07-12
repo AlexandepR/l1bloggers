@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response, Router} from "express";
-import {bloggersRepository} from "../repositories/bloggers-db-repository";
+import {bloggersService} from "../domain/bloggers-service";
 import {body, validationResult} from "express-validator";
 import {inputValidationMiddleware} from "../middleware/input-validation-middleware";
 import {authMiddleware} from "../middleware/auth-middleware";
@@ -20,7 +20,7 @@ export const youtubeUrlValidator = body('youtubeUrl')
 
 
 bloggersRouter.get('', async (req: Request, res: Response) => {
-    const bloggers = await bloggersRepository.getBloggers()
+    const bloggers = await bloggersService.getBloggers(req.query.name?.toString())
     if (bloggers) {
         res.send(bloggers)
         res.status(200)
@@ -41,7 +41,7 @@ bloggersRouter.get('/:id', async (req: Request, res: Response) => {
 
 bloggersRouter.post('/', authMiddleware, nameValidation, youtubeUrlValidator, inputValidationMiddleware,
     async (req: Request, res: Response) => {
-    const newBlogger = await bloggersRepository.postBlogger(req.body.name, req.body.youtubeUrl);
+    const newBlogger = await bloggersService.postBlogger(req.body.name, req.body.youtubeUrl);
     if (newBlogger) {
         res.status(201)
         res.send(newBlogger)
@@ -52,22 +52,23 @@ bloggersRouter.post('/', authMiddleware, nameValidation, youtubeUrlValidator, in
 
 bloggersRouter.put('/:id', authMiddleware, nameValidation, youtubeUrlValidator, inputValidationMiddleware,
     async (req: Request, res: Response) => {
-        const isUpdate = await bloggersRepository.putBlogger(+req.params.id, req.body.name?.trim(), req.body.youtubeUrl?.trim());
-        if (!isUpdate) {
+        const isUpdate = await bloggersService.putBlogger(+req.params.id, req.body.name?.trim(), req.body.youtubeUrl?.trim());
+        if (isUpdate) {
+            const blogger = await bloggersService.getBloggerByID(+req.params.id)
+            // res.status(204).send(blogger)
+            res.send(blogger)
+        } else {
             res.sendStatus(404).send({
                 errorsMessages: [{
                     message: "string",
                     field: "string"
                 }],
             })
-        } else {
-            // const blogger = await bloggersDbRepository.getBloggerByID(+req.params.id)
-            res.sendStatus(204);
         }
     })
 
 bloggersRouter.delete('/:id',authMiddleware, async (req: Request, res: Response) => {
-    const isDeleted = await bloggersRepository.deleteBlogger(+req.params.id);
+    const isDeleted = await bloggersService.deleteBlogger(+req.params.id);
     if (!isDeleted) {
         res.sendStatus(404)
     } else {
