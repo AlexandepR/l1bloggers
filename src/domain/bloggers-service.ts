@@ -15,15 +15,13 @@ export const bloggersService = {
             name: name,
             youtubeUrl: youtubeUrl
         }
-        return await bloggersRepository.postBlogger(newBlogger)
-        return newBlogger
+        const createdBlogger = await bloggersRepository.postBlogger(newBlogger)
+        return createdBlogger
     },
     async putBlogger(id: number, name: string, youtubeUrl: string): Promise<boolean> {
-        const updateBlogger = await collectionBloggers.updateOne({id: id}, { $set: {name: name, youtubeUrl: youtubeUrl}})
-        return updateBlogger.matchedCount === 1
+        return await bloggersRepository.putBlogger(id, name, youtubeUrl)
     },
     async deleteBlogger(id: number): Promise<boolean> {
-        const delBlogger = await collectionBloggers.deleteOne({id: id})
-        return delBlogger.deletedCount === 1
+        return await bloggersRepository.deleteBlogger(id)
     }
 }

@@ -19,37 +19,17 @@ export const bloggersRepository = {
         let blogger: bloggersType | null = await collectionBloggers.findOne({id})
         return blogger
     },
-    async postBlogger(name: string, youtubeUrl: string): Promise<bloggersType> {
-        const newBlogger = {
-            id: +(new Date()),
-            name: name,
-            youtubeUrl: youtubeUrl
-        }
+    async postBlogger(newBlogger: bloggersType): Promise<bloggersType> {
         const blogger = await collectionBloggers.insertOne(newBlogger)
-        // __bloggers.push(newBlogger)
         return newBlogger
     },
     async putBlogger(id: number, name: string, youtubeUrl: string): Promise<boolean> {
         const updateBlogger = await collectionBloggers.updateOne({id: id}, {$set: {name: name, youtubeUrl: youtubeUrl}})
         return updateBlogger.matchedCount === 1
-        // const blogger = __bloggers.find(b => b.id === id)
-        // if (blogger) {
-        //     blogger.name = name;
-        //     blogger.youtubeUrl = youtubeUrl;
-        //     return true
-        // } else {
-        //     return false
-        // }
+
     },
     async deleteBlogger(id: number): Promise<boolean> {
         const delBlogger = await collectionBloggers.deleteOne({id: id})
         return delBlogger.deletedCount === 1
-        // for (let i = 0; i < __bloggers.length; i++) {
-        //     if (__bloggers[i].id === id) {
-        //         __bloggers.splice(i, 1)
-        //         return true
-        //     }
-        // }
-        // return false
     }
 }
