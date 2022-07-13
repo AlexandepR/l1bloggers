@@ -24,7 +24,15 @@ export const bloggersRepository = {
         return newBlogger
     },
     async putBlogger(id: number, name: string, youtubeUrl: string): Promise<boolean> {
-        const updateBlogger = await collectionBloggers.updateOne({id: id}, {$set: {name: name, youtubeUrl: youtubeUrl}})
+        const updateBlogger = await collectionBloggers.updateOne(
+            {id: id},
+            {
+                $set: {
+                    name: name,
+                    youtubeUrl: youtubeUrl
+                }
+            }
+        )
         return updateBlogger.matchedCount === 1
 
     },
