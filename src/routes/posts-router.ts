@@ -1,5 +1,5 @@
 import {Request, Response, Router} from "express";
-import {postsRepository} from "../repositories/posts-repository";
+import {postsDbRepository} from "../repositories/posts-db-repository";
 import {body} from "express-validator";
 import {inputValidationMiddleware} from "../middleware/input-validation-middleware";
 import {bloggersRepository} from "../repositories/bloggers-db-repository";
@@ -17,20 +17,20 @@ const contentValidation = body('content')
     .trim().exists().notEmpty().withMessage('Please fill in the field - content')
     .isLength({min: 0, max: 1000}).withMessage('content length should be from 0 to 1000 symbols')
 
-postsRouter.get('/', (req: Request, res: Response) => {
-    const posts = postsRepository.getPosts()
+postsRouter.get('', async (req: Request, res: Response) => {
+    const posts = await postsDbRepository.getPosts()
     res.send(posts)
     res.sendStatus(201)
 })
-postsRouter.post('/',
+postsRouter.post('',
     authMiddleware,
     titleValidation,
     shortDescriptionValidation,
     contentValidation,
     inputValidationMiddleware,
-    (req: Request, res: Response) => {
+    async (req: Request, res: Response) => {
         const {title, shortDescription, content, bloggerId} = req.body
-        const newPosts = postsRepository.postPosts(title, shortDescription, content, bloggerId)
+        const newPosts = await postsDbRepository.postPosts(title, shortDescription, content, bloggerId)
         if (newPosts) {
             res.status(201).send(newPosts)
         } else {
@@ -43,9 +43,9 @@ postsRouter.post('/',
                     })
         }
     })
-postsRouter.get('/:id', (req: Request, res: Response) => {
+postsRouter.get('/:id', async (req: Request, res: Response) => {
     const id = +req.params.id;
-    const post = postsRepository.getPost(id)
+    const post = await postsDbRepository.getPost(id)
     if (post) {
         res.status(200).send(post)
     } else {
@@ -58,11 +58,11 @@ postsRouter.put('/:id',
     shortDescriptionValidation,
     contentValidation,
     inputValidationMiddleware,
-    (req: Request, res: Response) => {
+    async (req: Request, res: Response) => {
         const id = +req.params.id;
         const {title, shortDescription, content, bloggerId} = req.body;
-        const putPost = postsRepository.putPost(id, title, shortDescription, content, bloggerId)
-        const blogger = bloggersRepository.getBloggerByID(bloggerId)
+        const putPost = await postsDbRepository.putPost(id, title, shortDescription, content, bloggerId)
+        const blogger = await bloggersRepository.getBloggerByID(bloggerId)
         if (!blogger) {
             return res.status(400)
                 .send({
@@ -90,9 +90,9 @@ postsRouter.put('/:id',
         //     res.sendStatus(204);
         // }
     })
-postsRouter.delete('/:id',authMiddleware, (req: Request, res: Response) => {
+postsRouter.delete('/:id',authMiddleware, async (req: Request, res: Response) => {
     const id = +req.params.id
-    const isDel = postsRepository.delPost(id)
+    const isDel = await postsDbRepository.delPost(id)
     if (!isDel) {
         res.sendStatus(404)
     } else {

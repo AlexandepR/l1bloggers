@@ -5,7 +5,7 @@ export let posts = [
     {id: 0, title: "string2", shortDescription: "string2", content: "string2", bloggerId: 1, bloggerName: "string2"},
 ]
 
-export const postsRepository = {
+export const postsDbRepository = {
     getPosts() {
         return posts
     },

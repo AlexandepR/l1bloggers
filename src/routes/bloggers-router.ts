@@ -31,7 +31,7 @@ bloggersRouter.get('', async (req: Request, res: Response) => {
 })
 
 bloggersRouter.get('/:id', async (req: Request, res: Response) => {
-    const blogger = await bloggersRepository.getBloggerByID(+req.params.id)
+    const blogger = await bloggersService.getBloggerByID(+req.params.id)
     if (blogger) {
         res.status(200).send(blogger)
     } else {
