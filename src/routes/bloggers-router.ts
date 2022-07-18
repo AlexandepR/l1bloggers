@@ -20,6 +20,10 @@ export const youtubeUrlValidator = body('youtubeUrl')
 
 
 bloggersRouter.get('', async (req: Request, res: Response) => {
+    // const searchTerm = req.params.searchTerm
+    // const pageNumber = req.params.pageNumber
+    // const pageSize = req.params.pageSize
+    // db.getCollection('allBloggers').find({ item: { $regex: 'as'}})
     const bloggers = await bloggersService.getBloggers(req.query.name?.toString())
     if (bloggers) {
         res.send(bloggers)

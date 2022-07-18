@@ -20,8 +20,7 @@ const contentValidation = body('content')
 
 postsRouter.get('', async (req: Request, res: Response) => {
     const posts = await postsService.getPosts()
-    res.send(posts)
-    res.sendStatus(201)
+    res.status(201).send(posts)
 })
 postsRouter.get('/:id', async (req: Request, res: Response) => {
     const id = +req.params.id;
@@ -41,7 +40,9 @@ postsRouter.post('',
     inputValidationMiddleware,
     async (req: Request, res: Response) => {
         const {title, shortDescription, content, bloggerId} = req.body
-        const newPosts = await postsService.postPosts(title, shortDescription, content, bloggerId)
+        const newPosts = await postsService.postPosts(
+            title, shortDescription, content, bloggerId
+        )
         if (newPosts) {
             res.status(201).send(newPosts)
         } else {
@@ -72,7 +73,8 @@ postsRouter.put('/:id',
                         message: "Should be correct ID",
                         field: "bloggerId"
                     }],
-                })}
+                })
+        }
         if (putPost) {
             res.status(204).send(putPost)
         } else {
@@ -92,7 +94,7 @@ postsRouter.put('/:id',
         //     res.sendStatus(204);
         // }
     })
-postsRouter.delete('/:id',authMiddleware, async (req: Request, res: Response) => {
+postsRouter.delete('/:id', authMiddleware, async (req: Request, res: Response) => {
     const id = +req.params.id
     const isDel = await postsService.delPost(id)
     if (!isDel) {
