@@ -3,11 +3,9 @@ import {bloggersService} from "../domain/bloggers-service";
 import {body, validationResult} from "express-validator";
 import {inputValidationMiddleware} from "../middleware/input-validation-middleware";
 import {authMiddleware} from "../middleware/auth-middleware";
-import {paginatedResults} from "../middleware/pagination-middleware";
 
 
 export const bloggersRouter = Router({})
-
 
 export const nameValidation = body('name')
     .trim().notEmpty().withMessage('Please fill in the field - name')
@@ -19,16 +17,8 @@ export const youtubeUrlValidator = body('youtubeUrl')
     .withMessage('Please write correct URL')
     .isLength({min: 0, max: 100}).withMessage('Title length should be from 0 to 100 symbols')
 
-type resultType = {
-    next?: {pageNumber: number, pageSize: number}
-    previous?: {pageNumber: number, pageSize: number}
-    results?: any
-    totalBloggers?: any
-    data?: any
-}
 
 bloggersRouter.get('', async (req: Request, res: any) => {
-    // const searchTerm = req.params.searchTerm
 
     const pageSize: number  = parseInt(req.query.pageSize as string) || 10;
     const pageNumber: number = parseInt(req.query.pageNumber as string) || 1;
