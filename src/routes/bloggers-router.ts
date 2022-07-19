@@ -68,11 +68,12 @@ bloggersRouter.post('/', authMiddleware, nameValidation, youtubeUrlValidator, in
 bloggersRouter.post('/:bloggerId/posts',
     authMiddleware,  inputValidationMiddleware,
     async (req: Request, res: Response) => {
+        const bloggerId = +req.params.bloggerId
+        if(!bloggerId) {res.sendStatus(404)}
         const {title, shortDescription, content} = req.body
         // const newPosts = await postsService.postPosts(
         //     title, shortDescription, content, bloggerId
         // )
-        const bloggerId = +req.params.bloggerId
         const newPostForBlogger = await bloggersService.createPostForBlogger(
             bloggerId, title, shortDescription, content)
         if (newPostForBlogger) {
