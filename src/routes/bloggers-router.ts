@@ -63,7 +63,8 @@ bloggersRouter.get('', async (req: Request, res: Response) => {
 bloggersRouter.get('/:id', async (req: Request, res: Response) => {
     const blogger = await bloggersService.getBloggerByID(+req.params.id)
     if (blogger) {
-        res.status(200).send(blogger)
+        // res.status(200).send(blogger)
+        res.status(200).send({id: blogger.id, name: blogger.name, youtubeUrl: blogger.youtubeUrl})
     } else {
         res.sendStatus(404)
     }
@@ -87,22 +88,31 @@ bloggersRouter.post('/', authMiddleware, nameValidation, youtubeUrlValidator, in
         const newBlogger = await bloggersService.createBlogger(req.body.name, req.body.youtubeUrl);
         if (newBlogger) {
             res.status(201)
-            // res.send( {id: newBlogger.id, name: newBlogger.name, youtubeUrl: newBlogger.youtubeUrl})
-            res.send( newBlogger)
+            res.send(newBlogger)
         } else (
             res.sendStatus(400)
         )
     })
 bloggersRouter.post('/:bloggerId/posts',
-    authMiddleware, nameValidation, youtubeUrlValidator, inputValidationMiddleware,
+    authMiddleware,
     async (req: Request, res: Response) => {
+    // const shortDescription = req.body.shortDescription
+    // if (shortDescription.req.body) {}
         const {title, shortDescription, content} = req.body
+        if( title && shortDescription && content) {
         // const newPosts = await postsService.postPosts(
         //     title, shortDescription, content, bloggerId
         // )
         const bloggerId = +req.params.bloggerId
         const newPostForBlogger = await bloggersService.createPostForBlogger(
             bloggerId, title, shortDescription, content)
+        if (newPostForBlogger) {
+            res.status(201).send(newPostForBlogger)
+        } else (
+            res.sendStatus(400)
+        ) } else {
+            res.sendStatus(404)
+        }
     }
     )
 
