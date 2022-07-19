@@ -66,7 +66,7 @@ bloggersRouter.post('/', authMiddleware, nameValidation, youtubeUrlValidator, in
         )
     })
 bloggersRouter.post('/:bloggerId/posts',
-    authMiddleware, nameValidation, youtubeUrlValidator, inputValidationMiddleware,
+    authMiddleware,  inputValidationMiddleware,
     async (req: Request, res: Response) => {
         const {title, shortDescription, content} = req.body
         // const newPosts = await postsService.postPosts(
@@ -87,7 +87,6 @@ bloggersRouter.put('/:id', authMiddleware, nameValidation, youtubeUrlValidator, 
         if(blogger) {
         const isUpdate = await bloggersService.putBlogger(+req.params.id, req.body.name?.trim(), req.body.youtubeUrl?.trim());
         if (isUpdate) {
-
             // res.status(204).send(blogger)
             res.send(blogger)
         } } else {
