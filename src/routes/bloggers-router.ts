@@ -87,7 +87,8 @@ bloggersRouter.post('/', authMiddleware, nameValidation, youtubeUrlValidator, in
         const newBlogger = await bloggersService.createBlogger(req.body.name, req.body.youtubeUrl);
         if (newBlogger) {
             res.status(201)
-            res.send( {id: newBlogger.id, name: newBlogger.name, youtubeUrl: newBlogger.youtubeUrl})
+            // res.send( {id: newBlogger.id, name: newBlogger.name, youtubeUrl: newBlogger.youtubeUrl})
+            // res.send( newBlogger)
         } else (
             res.sendStatus(400)
         )
