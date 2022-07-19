@@ -10,6 +10,10 @@ export const postsRepository = {
         let post: postsType | null = await collectionPosts.findOne({id})
         return post
     },
+    async getBloggerPosts(bloggerId: number): Promise<postsType[] | null | postsType> {
+        let posts: postsType[] | null | postsType = await collectionPosts.find({bloggerId}).toArray()
+        return posts
+    },
     async postPosts(newPost: postsType): Promise<postsType> {
         const post = await collectionPosts.insertOne(newPost)
         return newPost

@@ -10,6 +10,9 @@ export const postsService = {
     async getPostByID(id: number): Promise<postsType | null> {
         return postsRepository.getPostByID(id)
     },
+    async getBloggerPosts(bloggerId: number): Promise<postsType[] | null | postsType> {
+        return postsRepository.getBloggerPosts(bloggerId)
+    },
     async postPosts(title: string, shortDescription: string, content: string, bloggerId: number): Promise<postsType | boolean> {
         const blogger = await bloggersRepository.getBloggerByID(bloggerId)
         if(blogger) {

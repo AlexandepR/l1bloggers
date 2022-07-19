@@ -3,6 +3,7 @@ import {bloggersService} from "../domain/bloggers-service";
 import {body, validationResult} from "express-validator";
 import {inputValidationMiddleware} from "../middleware/input-validation-middleware";
 import {authMiddleware} from "../middleware/auth-middleware";
+import {postsService} from "../domain/posts-service";
 
 
 export const bloggersRouter = Router({})
@@ -18,9 +19,9 @@ export const youtubeUrlValidator = body('youtubeUrl')
     .isLength({min: 0, max: 100}).withMessage('Title length should be from 0 to 100 symbols')
 
 
-bloggersRouter.get('', async (req: Request, res: any) => {
+bloggersRouter.get('', async (req: Request, res: Response) => {
 
-    const pageSize: number  = parseInt(req.query.pageSize as string) || 10;
+    const pageSize: number = parseInt(req.query.pageSize as string) || 10;
     const pageNumber: number = parseInt(req.query.pageNumber as string) || 1;
 
     const bloggers = await bloggersService.getBloggers(req.query.name?.toString(), pageNumber, pageSize)
@@ -67,17 +68,30 @@ bloggersRouter.get('/:id', async (req: Request, res: Response) => {
         res.sendStatus(404)
     }
 })
+bloggersRouter.get('/:bloggerId/posts', async (req: Request, res: Response) => {
+    const blogger = await bloggersService.getBloggerByID(+req.params.bloggerId)
+    if (blogger) {
+        const bloggerPosts = await postsService.getBloggerPosts(+req.params.bloggerId)
+        if (bloggerPosts) {
+            res.status(200).send(bloggerPosts)
+        } else {
+            res.sendStatus(404)
+        }
+    }else {
+        res.sendStatus(404)
+    }
+})
 
 bloggersRouter.post('/', authMiddleware, nameValidation, youtubeUrlValidator, inputValidationMiddleware,
     async (req: Request, res: Response) => {
-    const newBlogger = await bloggersService.postBlogger(req.body.name, req.body.youtubeUrl);
-    if (newBlogger) {
-        res.status(201)
-        res.send(newBlogger)
-    } else (
-        res.sendStatus(400)
-    )
-})
+        const newBlogger = await bloggersService.postBlogger(req.body.name, req.body.youtubeUrl);
+        if (newBlogger) {
+            res.status(201)
+            res.send(newBlogger)
+        } else (
+            res.sendStatus(400)
+        )
+    })
 
 bloggersRouter.put('/:id', authMiddleware, nameValidation, youtubeUrlValidator, inputValidationMiddleware,
     async (req: Request, res: Response) => {
@@ -96,7 +110,7 @@ bloggersRouter.put('/:id', authMiddleware, nameValidation, youtubeUrlValidator, 
         }
     })
 
-bloggersRouter.delete('/:id',authMiddleware, async (req: Request, res: Response) => {
+bloggersRouter.delete('/:id', authMiddleware, async (req: Request, res: Response) => {
     const isDeleted = await bloggersService.deleteBlogger(+req.params.id);
     if (!isDeleted) {
         res.sendStatus(404)
