@@ -1,4 +1,5 @@
 import {NextFunction, Request, Response} from "express";
+import {bloggersService} from "../domain/bloggers-service";
 
 type resultType = {
     next?: {page: number, limit: number}
@@ -6,31 +7,32 @@ type resultType = {
     results?: any
 }
 
-function paginatedResults(model: any) {
-    return (req: Request, res: Response, next: NextFunction) => {
-        const page = parseInt(<string>req.query.page);
-        const limit = parseInt(<string>req.query.limit);
 
-        const startIndex = (page - 1) * limit;
-        const endIndex = page * limit;
+export function paginatedResults(model: any) {
+    return (req: Request, res: any, next: NextFunction) => {
+        const pageNumber = parseInt(<string>req.query.pageNumber);
+        const pageSize = parseInt(<string>req.query.pageSize);
+
+        const startIndex = (pageNumber - 1) * pageSize;
+        const endIndex = pageNumber * pageSize;
 
         const results: resultType = {};
         if (endIndex < model.length) {
             results.next = {
-                page: page + 1,
-                limit: limit
+                page: pageNumber + 1,
+                limit: pageSize
             };
         }
 
         if (startIndex > 0) {
             results.previous = {
-                page: page - 1,
-                limit: limit
+                page: pageNumber - 1,
+                limit: pageSize
             };
         }
 
         results.results = model.slice(startIndex, endIndex);
-
+        // res.json(results)
         res.paginatedResults = results;
         next();
     };

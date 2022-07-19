@@ -3,6 +3,7 @@ import {bloggersService} from "../domain/bloggers-service";
 import {body, validationResult} from "express-validator";
 import {inputValidationMiddleware} from "../middleware/input-validation-middleware";
 import {authMiddleware} from "../middleware/auth-middleware";
+import {paginatedResults} from "../middleware/pagination-middleware";
 
 
 export const bloggersRouter = Router({})
@@ -18,14 +19,48 @@ export const youtubeUrlValidator = body('youtubeUrl')
     .withMessage('Please write correct URL')
     .isLength({min: 0, max: 100}).withMessage('Title length should be from 0 to 100 symbols')
 
+type resultType = {
+    next?: {pageNumber: number, pageSize: number}
+    previous?: {pageNumber: number, pageSize: number}
+    results?: any
+    totalBloggers?: any
+    data?: any
+}
 
-bloggersRouter.get('', async (req: Request, res: Response) => {
+bloggersRouter.get('', async (req: Request, res: any) => {
     // const searchTerm = req.params.searchTerm
-    // const pageNumber = req.params.pageNumber
-    // const pageSize = req.params.pageSize
-    // db.getCollection('allBloggers').find({ item: { $regex: 'as'}})
-    const bloggers = await bloggersService.getBloggers(req.query.name?.toString())
+
+    const pageSize: number  = parseInt(req.query.pageSize as string) || 10;
+    const pageNumber: number = parseInt(req.query.pageNumber as string) || 1;
+
+    const bloggers = await bloggersService.getBloggers(req.query.name?.toString(), pageNumber, pageSize)
     if (bloggers) {
+        // const result: resultType = {};
+        // let startIndex = pageNumber * pageSize;
+        // const endIndex = (pageNumber + 1) * pageSize;
+        // result.totalBloggers = bloggers;
+        // if (startIndex > 0) {
+        //     result.previous = {
+        //         pageNumber: pageNumber - 1,
+        //         pageSize: pageSize,
+        //     };
+        // }
+        // if (endIndex < ( bloggers.exec())) {
+        //     result.next = {
+        //         pageNumber: pageNumber + 1,
+        //         pageSize: pageSize,
+        //     };
+        // }
+        // result.data = await bloggers.find()
+        //     .sort("-_id")
+        //     .skip(startIndex)
+        //     .limit(limit)
+        //     .exec();
+        // result.rowsPerPage = limit;
+        // return res.json({ msg: "Posts Fetched successfully", data: result })
+
+        // paginatedResults(bloggers)
+        // res.json(res.paginatedResults)
         res.send(bloggers)
         res.status(200)
     } else (

@@ -8,12 +8,13 @@ export let __bloggers = [
 
 
 export const bloggersRepository = {
-    async getBloggers(name: string | null | undefined): Promise<bloggersType[]> {
+    async getBloggers(name: string | null | undefined, pageNumber: number, pageSize: number): Promise<bloggersType[]> {
         const filter: any = {}
         if (name) {
             filter.name = {$regex: name}
         }
-        return collectionBloggers.find(filter).toArray()
+        // return collectionBloggers.find(filter).skip(pageNumber).limit(pageSize).toArray()
+        return collectionBloggers.find(filter).skip(pageNumber).limit(pageSize).toArray()
     },
     async getBloggerByID(id: number): Promise<bloggersType | null> {
         let blogger: bloggersType | null = await collectionBloggers.findOne({id})
