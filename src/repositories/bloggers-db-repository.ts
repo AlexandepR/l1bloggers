@@ -13,8 +13,9 @@ export const bloggersRepository = {
         if (name) {
             filter.name = {$regex: name}
         }
-        // return collectionBloggers.find(filter).skip(pageNumber).limit(pageSize).toArray()
-        return collectionBloggers.find(filter).skip(pageNumber).limit(pageSize).toArray()
+        const skip = (pageNumber - 1) * pageSize
+        const limit = Math.ceil(await collectionBloggers.count({}) / pageSize)
+        return collectionBloggers.find(filter).skip(skip).limit(limit).toArray()
     },
     async getBloggerByID(id: number): Promise<bloggersType | null> {
         let blogger: bloggersType | null = await collectionBloggers.findOne({id})
