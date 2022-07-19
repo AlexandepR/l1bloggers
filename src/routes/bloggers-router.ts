@@ -63,8 +63,8 @@ bloggersRouter.get('', async (req: Request, res: Response) => {
 bloggersRouter.get('/:id', async (req: Request, res: Response) => {
     const blogger = await bloggersService.getBloggerByID(+req.params.id)
     if (blogger) {
-        // res.status(200).send(blogger)
-        res.status(200).send({id: blogger.id, name: blogger.name, youtubeUrl: blogger.youtubeUrl})
+        res.status(200).send(blogger)
+        // res.status(200).send({id: blogger.id, name: blogger.name, youtubeUrl: blogger.youtubeUrl})
     } else {
         res.sendStatus(404)
     }
@@ -94,12 +94,9 @@ bloggersRouter.post('/', authMiddleware, nameValidation, youtubeUrlValidator, in
         )
     })
 bloggersRouter.post('/:bloggerId/posts',
-    authMiddleware,
+    authMiddleware, nameValidation, youtubeUrlValidator, inputValidationMiddleware,
     async (req: Request, res: Response) => {
-    // const shortDescription = req.body.shortDescription
-    // if (shortDescription.req.body) {}
         const {title, shortDescription, content} = req.body
-        if( title && shortDescription && content) {
         // const newPosts = await postsService.postPosts(
         //     title, shortDescription, content, bloggerId
         // )
@@ -108,10 +105,6 @@ bloggersRouter.post('/:bloggerId/posts',
             bloggerId, title, shortDescription, content)
         if (newPostForBlogger) {
             res.status(201).send(newPostForBlogger)
-        } else (
-            res.sendStatus(400)
-        ) } else {
-            res.sendStatus(404)
         }
     }
     )
