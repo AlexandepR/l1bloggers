@@ -26,38 +26,11 @@ bloggersRouter.get('', async (req: Request, res: Response) => {
 
     const bloggers = await bloggersService.getBloggers(req.query.name?.toString(), pageNumber, pageSize)
     if (bloggers) {
-        // const result: resultType = {};
-        // let startIndex = pageNumber * pageSize;
-        // const endIndex = (pageNumber + 1) * pageSize;
-        // result.totalBloggers = bloggers;
-        // if (startIndex > 0) {
-        //     result.previous = {
-        //         pageNumber: pageNumber - 1,
-        //         pageSize: pageSize,
-        //     };
-        // }
-        // if (endIndex < ( bloggers.exec())) {
-        //     result.next = {
-        //         pageNumber: pageNumber + 1,
-        //         pageSize: pageSize,
-        //     };
-        // }
-        // result.data = await bloggers.find()
-        //     .sort("-_id")
-        //     .skip(startIndex)
-        //     .limit(limit)
-        //     .exec();
-        // result.rowsPerPage = limit;
-        // return res.json({ msg: "Posts Fetched successfully", data: result })
-
-        // paginatedResults(bloggers)
-        // res.json(res.paginatedResults)
         res.send(bloggers)
         res.status(200)
     } else (
         res.sendStatus(400)
     )
-    //     res.sendStatus(201).send(bloggers)
 })
 
 bloggersRouter.get('/:id', async (req: Request, res: Response) => {
