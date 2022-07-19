@@ -88,7 +88,7 @@ bloggersRouter.post('/', authMiddleware, nameValidation, youtubeUrlValidator, in
         if (newBlogger) {
             res.status(201)
             // res.send( {id: newBlogger.id, name: newBlogger.name, youtubeUrl: newBlogger.youtubeUrl})
-            // res.send( newBlogger)
+            res.send( newBlogger)
         } else (
             res.sendStatus(400)
         )
