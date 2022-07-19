@@ -1,5 +1,6 @@
 import {bloggersRepository} from "../repositories/bloggers-db-repository";
-import {bloggersType} from "../repositories/db";
+import {bloggersType, postsType} from "../repositories/db";
+import {postsRepository} from "../repositories/posts-db-repository";
 
 
 export const bloggersService = {
@@ -9,7 +10,7 @@ export const bloggersService = {
     async getBloggerByID(id: number): Promise<bloggersType | null> {
         return bloggersRepository.getBloggerByID(id)
     },
-    async postBlogger(name: string, youtubeUrl: string): Promise<bloggersType> {
+    async createBlogger(name: string, youtubeUrl: string): Promise<bloggersType> {
         const newBlogger = {
             id: +(new Date()),
             name: name,
@@ -17,6 +18,22 @@ export const bloggersService = {
         }
         const createdBlogger = await bloggersRepository.postBlogger(newBlogger)
         return createdBlogger
+    },
+    async createPostForBlogger(bloggerId: number, title: string,
+                               shortDescription: string, content: string): Promise<postsType | boolean> {
+        const blogger = await bloggersRepository.getBloggerByID(bloggerId)
+        if (blogger) {
+            const newPost = {
+                id: +(new Date()),
+                title: title,
+                shortDescription: shortDescription,
+                content: content,
+                bloggerId: bloggerId,
+                bloggerName: blogger.name
+            }
+            const createdPost = await postsRepository.postPosts(newPost)
+            return createdPost
+        } else return false
     },
     async putBlogger(id: number, name: string, youtubeUrl: string): Promise<boolean> {
         return await bloggersRepository.putBlogger(id, name, youtubeUrl)
