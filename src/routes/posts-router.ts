@@ -20,13 +20,13 @@ const contentValidation = body('content')
 
 postsRouter.get('', async (req: Request, res: Response) => {
     const posts = await postsService.getPosts()
-    res.status(201).send(posts)
+    res.status(200).send(posts)
 })
 postsRouter.get('/:id', async (req: Request, res: Response) => {
     const id = +req.params.id;
     const post = await postsService.getPostByID(id)
     if (post) {
-        res.status(201).send({
+        res.status(200).send({
             id: post.id,
             title: post.title,
             shortDescription: post.shortDescription,
