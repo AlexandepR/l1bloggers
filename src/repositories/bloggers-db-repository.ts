@@ -52,5 +52,9 @@ export const bloggersRepository = {
     async deleteBlogger(id: number): Promise<boolean> {
         const delBlogger = await collectionBloggers.deleteOne({id: id})
         return delBlogger.deletedCount === 1
+    },
+    async deleteBloggerAll(): Promise<boolean> {
+        const delBlogger = await collectionBloggers.deleteMany({})
+        return delBlogger.deletedCount === 1
     }
 }

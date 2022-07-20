@@ -40,5 +40,8 @@ export const bloggersService = {
     },
     async deleteBlogger(id: number): Promise<boolean> {
         return await bloggersRepository.deleteBlogger(id)
+    },
+    async deleteBloggerAll(): Promise<boolean> {
+        return await bloggersRepository.deleteBloggerAll()
     }
 }

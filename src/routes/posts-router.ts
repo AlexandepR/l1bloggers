@@ -8,13 +8,13 @@ import {postsService} from "../domain/posts-service";
 
 
 export const postsRouter = Router({})
-const titleValidation = body('title')
+export const titleValidation = body('title')
     .trim().exists().notEmpty().withMessage('Please fill in the field - Title')
     .isLength({min: 0, max: 30}).withMessage('Title length should be from 0 to 30 symbols')
-const shortDescriptionValidation = body('shortDescription')
+export const shortDescriptionValidation = body('shortDescription')
     .trim().exists().notEmpty().withMessage('Please fill in the field - shortDescription')
     .isLength({min: 0, max: 100}).withMessage('shortDescription length should be from 0 to 100 symbols')
-const contentValidation = body('content')
+export const contentValidation = body('content')
     .trim().exists().notEmpty().withMessage('Please fill in the field - content')
     .isLength({min: 0, max: 1000}).withMessage('content length should be from 0 to 1000 symbols')
 
