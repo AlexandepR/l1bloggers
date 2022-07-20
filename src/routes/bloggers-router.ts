@@ -89,7 +89,7 @@ bloggersRouter.post('/:bloggerId/posts',
             if (typeof newPostForBlogger !== "boolean") {
                 res.status(201).send({
                         id: newPostForBlogger.id,
-                        // title: newPostForBlogger.title,
+                        title: newPostForBlogger.title,
                         shortDescription: newPostForBlogger.shortDescription,
                         content: newPostForBlogger.content,
                         bloggerId: newPostForBlogger.bloggerId,
