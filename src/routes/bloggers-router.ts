@@ -97,6 +97,8 @@ bloggersRouter.post('/:bloggerId/posts',
                     }
                 )
             }
+        } else {
+            res.sendStatus(404)
         }
     }
     )
