@@ -44,7 +44,17 @@ postsRouter.post('',
             title, shortDescription, content, bloggerId
         )
         if (newPosts) {
-            res.status(201).send(newPosts)
+            if (typeof newPosts !== "boolean") {
+                res.status(201).send({
+                        id: newPosts.id,
+                        title: newPosts.title,
+                        shortDescription: newPosts.shortDescription,
+                        content: newPosts.content,
+                        bloggerId: newPosts.bloggerId,
+                        bloggerName: newPosts.bloggerName
+                    }
+                )
+            }
         } else {
             res.status(400)
                 .send({
