@@ -23,7 +23,7 @@ export const bloggersRepository = {
             "page": pageNumber,
             "pageSize":pageSize,
             "totalCount": totalCount,
-            "items":[{newArray}]
+            "items":newArray
         }
         return result
         // return collectionBloggers.find(filter).skip(skip).limit(pageSize).toArray()

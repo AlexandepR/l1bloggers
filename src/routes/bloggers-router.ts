@@ -116,7 +116,7 @@ bloggersRouter.put('/:id', authMiddleware, nameValidation, youtubeUrlValidator, 
             const isUpdate = await bloggersService.putBlogger(+req.params.id, req.body.name?.trim(), req.body.youtubeUrl?.trim());
             if (isUpdate) {
                 // res.send(blogger)
-                res.status(204)
+                res.sendStatus(204)
                 // .send(blogger)
 
             }
