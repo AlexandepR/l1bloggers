@@ -86,7 +86,17 @@ bloggersRouter.post('/:bloggerId/posts',
         const newPostForBlogger = await bloggersService.createPostForBlogger(
             bloggerId, title, shortDescription, content)
         if (newPostForBlogger) {
-            res.status(201).send(newPostForBlogger)
+            if (typeof newPostForBlogger !== "boolean") {
+                res.status(201).send({
+                        id: newPostForBlogger.id,
+                        title: newPostForBlogger.title,
+                        shortDescription: newPostForBlogger.shortDescription,
+                        content: newPostForBlogger.content,
+                        bloggerId: newPostForBlogger.bloggerId,
+                        bloggerName: newPostForBlogger.bloggerName
+                    }
+                )
+            }
         }
     }
     )
