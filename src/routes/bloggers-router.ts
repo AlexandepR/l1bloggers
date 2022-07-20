@@ -145,6 +145,5 @@ bloggersRouter.delete('/', authMiddleware, async (req: Request, res: Response) =
         res.sendStatus(404)
     } else {
         res.sendStatus(204)
-
     }
 })
