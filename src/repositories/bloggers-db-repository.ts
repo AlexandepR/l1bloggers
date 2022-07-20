@@ -15,7 +15,7 @@ export const bloggersRepository = {
         }
         const skip = (pageNumber - 1) * pageSize
         const limit = Math.ceil(await collectionBloggers.count({}) / pageSize)
-        return collectionBloggers.find(filter).skip(skip).limit(limit).toArray()
+        return collectionBloggers.find(filter).skip(skip).limit(pageSize).toArray()
     },
     async getBloggerByID(id: number): Promise<bloggersType | null> {
         let blogger: bloggersType | null = await collectionBloggers.findOne({id})
