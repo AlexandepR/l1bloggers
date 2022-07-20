@@ -40,7 +40,7 @@ bloggersRouter.get('/:id', async (req: Request, res: Response) => {
         res.status(200).send({
             id: blogger.id,
             name: blogger.name,
-            youtubeUrl: blogger.name
+            youtubeUrl: blogger.youtubeUrl
         })
     } else {
         res.sendStatus(404)
@@ -115,7 +115,7 @@ bloggersRouter.put('/:id', authMiddleware, nameValidation, youtubeUrlValidator, 
         if (blogger) {
             const isUpdate = await bloggersService.putBlogger(+req.params.id, req.body.name?.trim(), req.body.youtubeUrl?.trim());
             if (isUpdate) {
-                res.send(blogger)
+                // res.send(blogger)
                 res.status(204)
                 // .send(blogger)
 

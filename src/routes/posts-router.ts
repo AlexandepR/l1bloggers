@@ -119,3 +119,11 @@ postsRouter.delete('/:id', authMiddleware, async (req: Request, res: Response) =
         res.sendStatus(204)
     }
 })
+postsRouter.delete('/', authMiddleware, async (req: Request, res: Response) => {
+    const isDel = await postsService.delAllPost()
+    if (!isDel) {
+        res.sendStatus(404)
+    } else {
+        res.sendStatus(204)
+    }
+})

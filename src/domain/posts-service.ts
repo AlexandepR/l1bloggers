@@ -33,5 +33,8 @@ export const postsService = {
     },
     async delPost(id: number): Promise<boolean> {
         return await postsRepository.deletePost(id)
+    },
+    async delAllPost(): Promise<boolean> {
+        return await postsRepository.deleteAllPost()
     }
 }
