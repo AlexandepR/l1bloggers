@@ -68,7 +68,7 @@ bloggersRouter.post('/', authMiddleware, nameValidation, youtubeUrlValidator, in
             res.send({
                     id: newBlogger.id,
                     name: newBlogger.name,
-                    youtubeUrl: newBlogger.name
+                    youtubeUrl: newBlogger.youtubeUrl
                 }
             )
         } else (
@@ -115,9 +115,10 @@ bloggersRouter.put('/:id', authMiddleware, nameValidation, youtubeUrlValidator, 
         if (blogger) {
             const isUpdate = await bloggersService.putBlogger(+req.params.id, req.body.name?.trim(), req.body.youtubeUrl?.trim());
             if (isUpdate) {
+                res.send(blogger)
                 res.status(204)
                 // .send(blogger)
-                res.send(blogger)
+
             }
         } else {
             res.sendStatus(404)
