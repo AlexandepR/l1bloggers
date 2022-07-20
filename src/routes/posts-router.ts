@@ -26,8 +26,14 @@ postsRouter.get('/:id', async (req: Request, res: Response) => {
     const id = +req.params.id;
     const post = await postsService.getPostByID(id)
     if (post) {
-        res.status(200).send(post)
-    } else {
+        res.status(201).send({
+            id: post.id,
+            title: post.title,
+            shortDescription: post.shortDescription,
+            content: post.content,
+            bloggerId: post.bloggerId,
+            bloggerName: post.bloggerName
+    })} else {
         res.sendStatus(404)
     }
 })
