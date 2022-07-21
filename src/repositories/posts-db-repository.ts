@@ -23,7 +23,7 @@ export const postsRepository = {
         let posts: postsType[] | null | postsType = await collectionPosts.find({bloggerId}).toArray()
         const postsBlogger:postsBloggerType = {
             pagesCount: pagesCount,
-            page: pageNumber,
+            page: pageNumber + 1,
             pageSize: pageSize,
             totalCount: totalCount,
             // items : posts.map(obj => ({...obj, delete obj.id}))
