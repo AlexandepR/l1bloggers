@@ -1,6 +1,12 @@
 import {__bloggers} from "./bloggers-db-repository";
 import {collectionPosts, postsType} from "./db";
-
+export type postsBloggerType = {
+    pagesCount: number
+    page: number
+    pageSize: number
+    totalCount: number
+    items : postsType[] | void
+}
 
 export const postsRepository = {
     async getPosts(): Promise<postsType[]> {
@@ -10,9 +16,20 @@ export const postsRepository = {
         let post: postsType | null = await collectionPosts.findOne({id})
         return post
     },
-    async getBloggerPosts(bloggerId: number): Promise<postsType[] | null | postsType> {
+    async getBloggerPosts(bloggerId: number, pageSize: number, pageNumber: number): Promise<postsType[] | null | postsType | postsBloggerType> {
+        const totalCount = await collectionPosts.count({bloggerId})
+        const pagesCount = Math.ceil(totalCount / pageSize)
+        // const pageSize = pageSize;
         let posts: postsType[] | null | postsType = await collectionPosts.find({bloggerId}).toArray()
-        return posts
+        const postsBlogger:postsBloggerType = {
+            pagesCount: pagesCount,
+            page: pageNumber,
+            pageSize: pageSize,
+            totalCount: totalCount,
+            // items : posts.map(obj => ({...obj, delete obj.id}))
+            items: posts.map(({_id, ...obj}) => {return obj;})
+        }
+        return postsBlogger
     },
     async postPosts(newPost: postsType): Promise<postsType> {
         const post = await collectionPosts.insertOne(newPost)

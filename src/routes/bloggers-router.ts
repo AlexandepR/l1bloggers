@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from "express";
+import {NextFunction, query, Request, Response, Router} from "express";
 import {bloggersService} from "../domain/bloggers-service";
 import {body, validationResult} from "express-validator";
 import {inputValidationMiddleware} from "../middleware/input-validation-middleware";
@@ -49,7 +49,8 @@ bloggersRouter.get('/:id', async (req: Request, res: Response) => {
 bloggersRouter.get('/:bloggerId/posts', async (req: Request, res: Response) => {
     const blogger = await bloggersService.getBloggerByID(+req.params.bloggerId)
     if (blogger) {
-        const bloggerPosts = await postsService.getBloggerPosts(+req.params.bloggerId)
+        const {pageSize, pageNumber} : any = req.query
+        const bloggerPosts = await postsService.getBloggerPosts(+req.params.bloggerId, pageSize >= 0 ? pageSize : 10, pageNumber! ? pageNumber : 0)
         if (bloggerPosts) {
             res.status(200).send(bloggerPosts)
         } else {

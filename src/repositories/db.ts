@@ -6,6 +6,7 @@ export type bloggersType = {
     youtubeUrl: string
 }
 export type postsType = {
+    _id?: number
     id: number
     title: string
     shortDescription: string

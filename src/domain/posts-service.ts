@@ -1,6 +1,6 @@
 import {bloggersRepository} from "../repositories/bloggers-db-repository";
 import {bloggersType, postsType} from "../repositories/db";
-import {postsRepository} from "../repositories/posts-db-repository";
+import {postsBloggerType, postsRepository} from "../repositories/posts-db-repository";
 
 
 export const postsService = {
@@ -10,8 +10,8 @@ export const postsService = {
     async getPostByID(id: number): Promise<postsType | null> {
         return postsRepository.getPostByID(id)
     },
-    async getBloggerPosts(bloggerId: number): Promise<postsType[] | null | postsType> {
-        return postsRepository.getBloggerPosts(bloggerId)
+    async getBloggerPosts(bloggerId: number, pageSize: number, pageNumber: number): Promise<postsType[] | null | postsType | postsBloggerType> {
+        return postsRepository.getBloggerPosts(bloggerId, pageSize, pageNumber)
     },
     async postPosts(title: string, shortDescription: string, content: string, bloggerId: number): Promise<postsType | boolean> {
         const blogger = await bloggersRepository.getBloggerByID(bloggerId)
