@@ -40,7 +40,7 @@ export const postsRepository = {
         const result = posts.map(({_id, ...obj}) => {return obj;})
         const postsBlogger:postsBloggerType = {
             pagesCount: pagesCount,
-            page: pageNumber + 1,
+            page: pageNumber,
             pageSize: pageSize,
             totalCount: totalCount,
             items: result
