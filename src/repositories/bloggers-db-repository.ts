@@ -18,7 +18,7 @@ export const bloggersRepository = {
         const skip = (pageNumber - 1) * pageSize
         const pagesCount = Math.ceil(await collectionBloggers.count({}) / pageSize)
         const newArray = await collectionBloggers.find(filter).skip(skip).limit(pageSize).toArray()
-        const changeArray = newArray.map(obj=>({...obj, _id: name}))
+        const changeArray = newArray.map(({_id, ...obj}) => {return obj;})
         const result = {
         "pagesCount": pagesCount,
             "page": pageNumber,

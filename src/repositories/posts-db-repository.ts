@@ -18,9 +18,10 @@ export const postsRepository = {
     },
     async getBloggerPosts(bloggerId: number, pageSize: number, pageNumber: number): Promise<postsType[] | null | postsType | postsBloggerType> {
         const totalCount = await collectionPosts.count({bloggerId})
+        const skip = (pageNumber - 1) * pageSize
         const pagesCount = Math.ceil(totalCount / pageSize)
         // const pageSize = pageSize;
-        let posts: postsType[] | null | postsType = await collectionPosts.find({bloggerId}).toArray()
+        let posts: postsType[] | null | postsType = await collectionPosts.find({bloggerId}).skip(skip).limit(pageSize).toArray()
         const postsBlogger:postsBloggerType = {
             pagesCount: pagesCount,
             page: pageNumber + 1,
