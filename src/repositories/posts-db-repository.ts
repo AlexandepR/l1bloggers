@@ -1,5 +1,5 @@
 import {__bloggers} from "./bloggers-db-repository";
-import {collectionPosts, postsType} from "./db";
+import {collectionBloggers, collectionPosts, postsType} from "./db";
 export type postsBloggerType = {
     pagesCount: number
     page: number
@@ -9,8 +9,22 @@ export type postsBloggerType = {
 }
 
 export const postsRepository = {
-    async getPosts(): Promise<postsType[]> {
-        return collectionPosts.find().toArray()
+    async getPosts(pageNumber: number, pageSize: number): Promise<any> {
+        const totalCount = await collectionPosts.count({});
+        const skip = (pageNumber - 1) * pageSize
+        const pagesCount = Math.ceil(await collectionPosts.count({}) / pageSize)
+        const newArray = await collectionPosts.find().skip(skip).limit(pageSize).toArray()
+        const changeArray = newArray.map(({_id, ...obj}) => {return obj;})
+        const result = {
+            "pagesCount": pagesCount,
+            "page": pageNumber,
+            "pageSize":pageSize,
+            "totalCount": totalCount,
+            "items": changeArray
+        }
+        return result
+
+        // return collectionPosts.find().toArray()
     },
     async getPostByID(id: number): Promise<postsType | null> {
         let post: postsType | null = await collectionPosts.findOne({id})
@@ -18,17 +32,18 @@ export const postsRepository = {
     },
     async getBloggerPosts(bloggerId: number, pageSize: number, pageNumber: number): Promise<postsType[] | null | postsType | postsBloggerType> {
         const totalCount = await collectionPosts.count({bloggerId})
+        // const totalCount = 13
         const skip = (pageNumber - 1) * pageSize
-        const pagesCount = Math.ceil(totalCount / pageSize)
+        const pagesCount = Math.ceil(+totalCount / pageSize)
         // const pageSize = pageSize;
         let posts: postsType[] | null | postsType = await collectionPosts.find({bloggerId}).skip(skip).limit(pageSize).toArray()
+        const result = posts.map(({_id, ...obj}) => {return obj;})
         const postsBlogger:postsBloggerType = {
             pagesCount: pagesCount,
             page: pageNumber + 1,
             pageSize: pageSize,
             totalCount: totalCount,
-            // items : posts.map(obj => ({...obj, delete obj.id}))
-            items: posts.map(({_id, ...obj}) => {return obj;})
+            items: result
         }
         return postsBlogger
     },

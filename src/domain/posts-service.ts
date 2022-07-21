@@ -4,8 +4,8 @@ import {postsBloggerType, postsRepository} from "../repositories/posts-db-reposi
 
 
 export const postsService = {
-    async getPosts(): Promise<postsType[]> {
-        return postsRepository.getPosts()
+    async getPosts(pageNumber: number, pageSize: number): Promise<postsType[]> {
+        return postsRepository.getPosts(pageNumber, pageSize)
     },
     async getPostByID(id: number): Promise<postsType | null> {
         return postsRepository.getPostByID(id)
