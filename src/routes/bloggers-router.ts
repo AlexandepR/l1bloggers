@@ -22,8 +22,8 @@ export const youtubeUrlValidator = body('youtubeUrl')
 
 bloggersRouter.get('', async (req: Request, res: Response) => {
 
-    const pageSize: number = parseInt(req.query.pageSize as string) || 10;
-    const pageNumber: number = parseInt(req.query.pageNumber as string) || 1;
+    const pageSize: number = parseInt(req.query.PageSize as string) || 10;
+    const pageNumber: number = parseInt(req.query.PageNumber as string) || 1;
 
     const bloggers = await bloggersService.getBloggers(req.query.name?.toString(), pageNumber, pageSize)
     if (bloggers) {
@@ -49,8 +49,8 @@ bloggersRouter.get('/:id', async (req: Request, res: Response) => {
 bloggersRouter.get('/:bloggerId/posts', async (req: Request, res: Response) => {
     const blogger = await bloggersService.getBloggerByID(+req.params.bloggerId)
     if (blogger) {
-        const {pageSize, pageNumber} : any = req.query
-        const bloggerPosts = await postsService.getBloggerPosts(+req.params.bloggerId, pageSize >= 1 ? pageSize : 10, pageNumber >= 1 ? pageNumber : 1)
+        const {PageSize, PageNumber} : any = req.query
+        const bloggerPosts = await postsService.getBloggerPosts(+req.params.bloggerId, PageSize >= 1 ? PageSize : 10, PageNumber >= 1 ? PageNumber : 1)
         if (bloggerPosts) {
             res.status(200).send(bloggerPosts)
         } else {

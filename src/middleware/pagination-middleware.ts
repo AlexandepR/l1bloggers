@@ -10,8 +10,8 @@ type resultType = {
 
 export function paginatedResults(model: any) {
     return (req: Request, res: any, next: NextFunction) => {
-        const pageNumber = parseInt(<string>req.query.pageNumber);
-        const pageSize = parseInt(<string>req.query.pageSize);
+        const pageNumber = parseInt(<string>req.query.PageNumber);
+        const pageSize = parseInt(<string>req.query.PageSize);
 
         const startIndex = (pageNumber - 1) * pageSize;
         const endIndex = pageNumber * pageSize;

@@ -19,8 +19,8 @@ export const contentValidation = body('content')
     .isLength({min: 0, max: 1000}).withMessage('content length should be from 0 to 1000 symbols')
 
 postsRouter.get('', async (req: Request, res: Response) => {
-    const pageSize: number = parseInt(req.query.pageSize as string) || 10;
-    const pageNumber: number = parseInt(req.query.pageNumber as string) || 1;
+    const pageSize: number = parseInt(req.query.PageSize as string) || 10;
+    const pageNumber: number = parseInt(req.query.PageNumber as string) || 1;
 
     const posts = await postsService.getPosts(pageNumber, pageSize)
     if (posts){
