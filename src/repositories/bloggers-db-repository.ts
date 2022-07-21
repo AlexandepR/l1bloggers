@@ -14,7 +14,7 @@ export const bloggersRepository = {
             filter.name = {$regex: name}
         }
         // const pagesCount = 0;
-        const totalCount = await collectionBloggers.count({});
+        const totalCount = await collectionBloggers.count({filter});
         const skip = (pageNumber - 1) * pageSize
         const pagesCount = Math.ceil(await collectionBloggers.count({}) / pageSize)
         const newArray = await collectionBloggers.find(filter).skip(skip).limit(pageSize).toArray()
