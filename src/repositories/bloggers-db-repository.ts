@@ -8,13 +8,13 @@ export let __bloggers = [
 
 
 export const bloggersRepository = {
-    async getBloggers(name: string | null | undefined, pageNumber: number, pageSize: number): Promise<any> {
+    async getBloggers(name: string | null | undefined, pageNumber: number, pageSize: number): Promise<any | null>  {
         const filter: any = {}
         if (name) {
             filter.name = {$regex: name}
         }
         // const pagesCount = 0;
-        const totalCount = await collectionBloggers.count({filter});
+        const totalCount = await collectionBloggers.countDocuments(filter);
         const skip = (pageNumber - 1) * pageSize
         const pagesCount = Math.ceil(await collectionBloggers.count({}) / pageSize)
         const newArray = await collectionBloggers.find(filter).skip(skip).limit(pageSize).toArray()
