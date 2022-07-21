@@ -21,11 +21,11 @@ export const youtubeUrlValidator = body('youtubeUrl')
 
 
 bloggersRouter.get('', async (req: Request, res: Response) => {
-
+    const name = req.query.SearchNameTerm;
     const pageSize: number = parseInt(req.query.PageSize as string) || 10;
     const pageNumber: number = parseInt(req.query.PageNumber as string) || 1;
 
-    const bloggers = await bloggersService.getBloggers(req.query.name?.toString(), pageNumber, pageSize)
+    const bloggers = await bloggersService.getBloggers(name?.toString(), pageNumber, pageSize)
     if (bloggers) {
         res.send(bloggers)
         res.status(200)
@@ -33,7 +33,6 @@ bloggersRouter.get('', async (req: Request, res: Response) => {
         res.sendStatus(400)
     )
 })
-
 bloggersRouter.get('/:id', async (req: Request, res: Response) => {
     const blogger = await bloggersService.getBloggerByID(+req.params.id)
     if (blogger) {
