@@ -47,10 +47,11 @@ bloggersRouter.get('/:id', async (req: Request, res: Response) => {
     }
 })
 bloggersRouter.get('/:bloggerId/posts', async (req: Request, res: Response) => {
+    const pageSize: number = parseInt(req.query.PageSize as string) || 10;
+    const pageNumber: number = parseInt(req.query.PageNumber as string) || 1;
     const blogger = await bloggersService.getBloggerByID(+req.params.bloggerId)
     if (blogger) {
-        const {PageSize, PageNumber} : any = req.query
-        const bloggerPosts = await postsService.getBloggerPosts(+req.params.bloggerId, PageSize >= 1 ? PageSize : 10, PageNumber >= 1 ? PageNumber : 1)
+        const bloggerPosts = await postsService.getBloggerPosts(+req.params.bloggerId, pageSize, pageNumber)
         if (bloggerPosts) {
             res.status(200).send(bloggerPosts)
         } else {
