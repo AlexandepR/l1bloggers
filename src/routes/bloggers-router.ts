@@ -118,8 +118,6 @@ bloggersRouter.put('/:id', authMiddleware, nameValidation, youtubeUrlValidator, 
             if (isUpdate) {
                 // res.send(blogger)
                 res.sendStatus(204)
-                // .send(blogger)
-
             }
         } else {
             res.sendStatus(404)
