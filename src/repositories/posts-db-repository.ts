@@ -1,11 +1,12 @@
 import {__bloggers} from "./bloggers-db-repository";
 import {collectionBloggers, collectionPosts, postsType} from "./db";
+
 export type postsBloggerType = {
     pagesCount: number
     page: number
     pageSize: number
     totalCount: number
-    items : postsType[] | void
+    items: postsType[] | void
 }
 
 export const postsRepository = {
@@ -14,16 +15,17 @@ export const postsRepository = {
         const skip = (pageNumber - 1) * pageSize
         const pagesCount = Math.ceil(await collectionPosts.count({}) / pageSize)
         const newArray = await collectionPosts.find().skip(skip).limit(pageSize).toArray()
-        const changeArray = newArray.map(({_id, ...obj}) => {return obj;})
+        const changeArray = newArray.map(({_id, ...obj}) => {
+            return obj;
+        })
         const result = {
             "pagesCount": pagesCount,
             "page": pageNumber,
-            "pageSize":pageSize,
+            "pageSize": pageSize,
             "totalCount": totalCount,
             "items": changeArray
         }
         return result
-
         // return collectionPosts.find().toArray()
     },
     async getPostByID(id: number): Promise<postsType | null> {
@@ -37,8 +39,10 @@ export const postsRepository = {
         const pagesCount = Math.ceil(+totalCount / pageSize)
         // const pageSize = pageSize;
         let posts: postsType[] | null | postsType = await collectionPosts.find({bloggerId}).skip(skip).limit(pageSize).toArray()
-        const result = posts.map(({_id, ...obj}) => {return obj;})
-        const postsBlogger:postsBloggerType = {
+        const result = posts.map(({_id, ...obj}) => {
+            return obj;
+        })
+        const postsBlogger: postsBloggerType = {
             pagesCount: pagesCount,
             page: pageNumber,
             pageSize: pageSize,
