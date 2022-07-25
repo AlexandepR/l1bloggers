@@ -1,4 +1,3 @@
-import {__bloggers} from "./bloggers-db-repository";
 import {collectionBloggers, collectionPosts, postsType} from "./db";
 
 export type postsBloggerType = {
@@ -8,6 +7,7 @@ export type postsBloggerType = {
     totalCount: number
     items: postsType[] | void
 }
+
 
 export const postsRepository = {
     async getPosts(pageNumber: number, pageSize: number): Promise<any> {
@@ -26,7 +26,6 @@ export const postsRepository = {
             "items": changeArray
         }
         return result
-        // return collectionPosts.find().toArray()
     },
     async getPostByID(id: number): Promise<postsType | null> {
         let post: postsType | null = await collectionPosts.findOne({id})
