@@ -10,7 +10,15 @@ export const passwordValidation = body('password')
 
 
 usersRouter.get('/', (req:Request, res:Response) => {
+    const pageNumber: number = parseInt(req.query.PageNumber as string) || 1;
+    const pageSize: number = parseInt(req.query.PageSize as string) || 10;
 
+    const users = await usersService.getUsers()
+    if (users) {
+        res.status(200).send(users)
+    } else {
+        res.sendStatus(400)
+    }
 })
 usersRouter.post('/', (req:Request, res: Response) => {
 
