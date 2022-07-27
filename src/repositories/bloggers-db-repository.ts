@@ -6,30 +6,37 @@ export let __bloggers = [
 
 
 export const bloggersRepository = {
-    async getBloggers(name: string | null | undefined, pageNumber: number, pageSize: number): Promise<any | null>  {
+    async getBloggers(pageNumber: number, pageSize: number, searchNameTerm: string | null): Promise<any | null>  {
         const filter: any = {}
-        if (name) {
-            filter.name = {$regex: name}
+        if (searchNameTerm) {
+            filter.name = {$regex: searchNameTerm}
         }
         const totalCount: any = await collectionBloggers.countDocuments(filter);
         const skip = (pageNumber - 1) * pageSize
         const pagesCount = Math.ceil(totalCount / pageSize)
-        const newArray = await collectionBloggers.find(filter).skip(skip).limit(pageSize).toArray()
-        const changeArray = newArray.map(({_id, ...obj}) => {return obj;})
+        // const newArray = await collectionBloggers.find(filter).skip(skip).limit(pageSize).toArray()
+        const newArray = await collectionBloggers.find(filter, {projection:{_id: 0}}).skip(skip).limit(pageSize).toArray()
+        // const changeArray = newArray.map(({_id, ...obj}) => {return obj;})
         const result = {
         "pagesCount": pagesCount,
             "page": pageNumber,
             "pageSize":pageSize,
             "totalCount": totalCount,
-            "items": changeArray
+            // "items": changeArray
+            "items": newArray
         }
         return result
     },
     async getBloggerByID(id: number): Promise<bloggersType | null> {
-        let blogger: bloggersType | null = await collectionBloggers.findOne({id})
+        // let blogger: bloggersType | null = await collectionBloggers.findOne({id})
+        let blogger: bloggersType | null = await collectionBloggers.findOne({id}, {projection:{_id: 0}})
         return blogger
     },
     async postBlogger(newBlogger: bloggersType): Promise<bloggersType> {
+        // const bloggerTypeDb = {
+        //     _id: new ObjectId,
+        //     ...newBlogger
+        // }
         const blogger = await collectionBloggers.insertOne(newBlogger)
         return newBlogger
     },
