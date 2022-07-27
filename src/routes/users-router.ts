@@ -1,5 +1,6 @@
 import {Request, Response, Router} from "express";
 import {body} from "express-validator";
+import {usersService} from "../domain/user-service";
 
 
 export const usersRouter = Router({})
@@ -9,11 +10,11 @@ export const passwordValidation = body('password')
     .trim().exists().notEmpty().isLength({min: 6, max: 20}).withMessage('Password should be from 6 to 20 symbols')
 
 
-usersRouter.get('/', (req:Request, res:Response) => {
+usersRouter.get('/', async (req:Request, res:Response) => {
     const pageNumber: number = parseInt(req.query.PageNumber as string) || 1;
     const pageSize: number = parseInt(req.query.PageSize as string) || 10;
 
-    const users = await usersService.getUsers()
+    const users = await usersService.getUsers(pageNumber, pageSize)
     if (users) {
         res.status(200).send(users)
     } else {
