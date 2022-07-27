@@ -11,10 +11,10 @@ export const passwordValidation = body('password')
 
 
 usersRouter.get('/', async (req:Request, res:Response) => {
-    const pageNumber: number = parseInt(req.query.PageNumber as string) || 1;
-    const pageSize: number = parseInt(req.query.PageSize as string) || 10;
+    const pageNumber = req.query.PageNumber || 1;
+    const pageSize = req.query.PageSize || 10;
 
-    const users = await usersService.getUsers(pageNumber, pageSize)
+    const users = await usersService.getUsers(+pageNumber, +pageSize)
     if (users) {
         res.status(200).send(users)
     } else {
