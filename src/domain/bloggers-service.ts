@@ -1,16 +1,16 @@
-import {bloggersRepository} from "../repositories/bloggers-db-repository";
-import {bloggersType, postsType} from "../repositories/db";
+import {bloggersDataType, bloggersRepository} from "../repositories/bloggers-db-repository";
+import {BloggersType, PostsType} from "../repositories/db";
 import {postsRepository} from "../repositories/posts-db-repository";
 
 
 export const bloggersService = {
-    async getBloggers(name: string | null | undefined, pageNumber: number, pageSize: number): Promise<bloggersType[]> {
-        return bloggersRepository.getBloggers(name, pageNumber, pageSize)
+    async getBloggers(pageNumber: number, pageSize: number, searchNameTerm: string | null): Promise<bloggersDataType<BloggersType[]>> {
+        return bloggersRepository.getBloggers(pageNumber, pageSize, searchNameTerm)
     },
-    async getBloggerByID(id: number): Promise<bloggersType | null> {
+    async getBloggerByID(id: number): Promise<BloggersType | null> {
         return bloggersRepository.getBloggerByID(id)
     },
-    async createBlogger(name: string, youtubeUrl: string): Promise<bloggersType> {
+    async createBlogger(name: string, youtubeUrl: string): Promise<BloggersType> {
         const newBlogger = {
             id: +(new Date()),
             name: name,
@@ -20,7 +20,7 @@ export const bloggersService = {
         return createdBlogger
     },
     async createPostForBlogger(bloggerId: number, title: string,
-                               shortDescription: string, content: string): Promise<postsType | boolean> {
+                               shortDescription: string, content: string): Promise<PostsType | boolean> {
         const blogger = await bloggersRepository.getBloggerByID(bloggerId)
         if (blogger) {
             const newPost = {
