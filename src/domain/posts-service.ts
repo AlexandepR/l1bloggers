@@ -1,19 +1,19 @@
 import {bloggersRepository} from "../repositories/bloggers-db-repository";
-import {bloggersType, postsType} from "../repositories/db";
+import {BloggersType, PostsType} from "../repositories/db";
 import {postsBloggerType, postsRepository} from "../repositories/posts-db-repository";
 
 
 export const postsService = {
-    async getPosts(pageNumber: number, pageSize: number): Promise<postsType[]> {
+    async getPosts(pageNumber: number, pageSize: number): Promise<postsBloggerType<PostsType[]>> {
         return postsRepository.getPosts(pageNumber, pageSize)
     },
-    async getPostByID(id: number): Promise<postsType | null> {
+    async getPostByID(id: number): Promise<PostsType | null> {
         return postsRepository.getPostByID(id)
     },
-    async getBloggerPosts(bloggerId: number, pageSize: number, pageNumber: number): Promise<postsType[] | null | postsType | postsBloggerType> {
+    async getBloggerPosts(bloggerId: number, pageSize: number, pageNumber: number): Promise<postsBloggerType<PostsType[]>> {
         return postsRepository.getBloggerPosts(bloggerId, pageSize, pageNumber)
     },
-    async postPosts(title: string, shortDescription: string, content: string, bloggerId: number): Promise<postsType | boolean> {
+    async postPosts(title: string, shortDescription: string, content: string, bloggerId: number): Promise<PostsType | boolean> {
         const blogger = await bloggersRepository.getBloggerByID(bloggerId)
         if(blogger) {
             const newPost = {
