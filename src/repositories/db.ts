@@ -1,11 +1,20 @@
 import {MongoClient} from 'mongodb'
 
-export type bloggersType = {
+// interface pagination {
+//     pagesCount: number,
+//     page: number
+// }
+// interface bloggerWithPag extends pagination {
+//     items: string
+// }
+
+
+export type BloggersType = {
     id: number
     name: string
     youtubeUrl: string
 }
-export type postsType = {
+export type PostsType = {
     _id?: number
     id: number
     title: string
@@ -14,7 +23,7 @@ export type postsType = {
     bloggerId: number
     bloggerName: string
 }
-export type userType = {
+export type UserType = {
     id: string,
     login: string
 }
@@ -24,9 +33,9 @@ const mongoUri = ('mongodb+srv://Alexandep:PyGSIcZUZ0llnWkK@cluster0.wcy2s6z.mon
 
 const client = new MongoClient(mongoUri);
 const db = client.db("allBloggers");
-export const collectionBloggers = db.collection<bloggersType>("bloggers");
-export const collectionPosts = db.collection<postsType>("posts");
-export const collectionUsers = db.collection<userType>("users");
+export const collectionBloggers = db.collection<BloggersType>("bloggers");
+export const collectionPosts = db.collection<PostsType>("posts");
+export const collectionUsers = db.collection<UserType>("users");
 
 export async function runDb() {
         try {
