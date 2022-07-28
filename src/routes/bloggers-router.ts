@@ -1,6 +1,6 @@
-import {NextFunction, query, Request, Response, Router} from "express";
+import {Request, Response, Router} from "express";
 import {bloggersService} from "../domain/bloggers-service";
-import {body, validationResult} from "express-validator";
+import {body} from "express-validator";
 import {inputValidationMiddleware} from "../middleware/input-validation-middleware";
 import {authMiddleware} from "../middleware/auth-middleware";
 import {postsService} from "../domain/posts-service";
@@ -21,11 +21,11 @@ export const youtubeUrlValidator = body('youtubeUrl')
 
 
 bloggersRouter.get('', async (req: Request, res: Response) => {
-    const name = req.query.SearchNameTerm;
-    const pageSize: number = parseInt(req.query.PageSize as string) || 10;
-    const pageNumber: number = parseInt(req.query.PageNumber as string) || 1;
+    const searchNameTerm = req.query.SearchNameTerm?.toString() || null;
+    const pageSize = req.query.PageSize || 10;
+    const pageNumber = req.query.PageNumber || 1;
 
-    const bloggers = await bloggersService.getBloggers(name?.toString(), pageNumber, pageSize)
+    const bloggers = await bloggersService.getBloggers( +pageNumber, +pageSize, searchNameTerm)
     if (bloggers) {
         res.send(bloggers)
         res.status(200)
