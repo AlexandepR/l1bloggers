@@ -1,11 +1,11 @@
-import {collectionUsers, userType} from "./db";
+import {collectionUsers, UserType} from "./db";
 
 type resultType = {
     "pagesCount": number
     "page": number
     "pageSize": number
     "totalCount": number
-    "items": userType
+    "items": UserType
 }
 
 export const usersRepository =  {
