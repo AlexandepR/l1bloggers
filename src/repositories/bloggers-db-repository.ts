@@ -1,12 +1,20 @@
-import {bloggersType, collectionBloggers} from "./db";
+import {BloggersType, collectionBloggers} from "./db";
 
 export let __bloggers = [
     {id: 0, name: "Petya", youtubeUrl: "https://www.youtube.com/uOWp8HU"},
 ]
+type test<T> = {
+    "pagesCount": number,
+    "page": number,
+    "pageSize":number,
+    "totalCount": number,
+    // "items": changeArray
+    "items": T
+}
 
 
 export const bloggersRepository = {
-    async getBloggers(pageNumber: number, pageSize: number, searchNameTerm: string | null): Promise<any | null>  {
+    async getBloggers(pageNumber: number, pageSize: number, searchNameTerm: string | null): Promise<test<BloggersType[]>>  {
         const filter: any = {}
         if (searchNameTerm) {
             filter.name = {$regex: searchNameTerm}
@@ -14,9 +22,9 @@ export const bloggersRepository = {
         const totalCount: any = await collectionBloggers.countDocuments(filter);
         const skip = (pageNumber - 1) * pageSize
         const pagesCount = Math.ceil(totalCount / pageSize)
-        // const newArray = await collectionBloggers.find(filter).skip(skip).limit(pageSize).toArray()
-        const newArray = await collectionBloggers.find(filter, {projection:{_id: 0}}).skip(skip).limit(pageSize).toArray()
-        // const changeArray = newArray.map(({_id, ...obj}) => {return obj;})
+        const newArray = await collectionBloggers.find(filter).skip(skip).limit(pageSize).toArray()
+        // const newArray = await collectionBloggers.find(filter, {projection:{_id: 0}}).skip(skip).limit(pageSize).toArray()
+        const changeArray = newArray.map(({_id, ...obj}) => {return obj;})
         const result = {
         "pagesCount": pagesCount,
             "page": pageNumber,
@@ -27,12 +35,12 @@ export const bloggersRepository = {
         }
         return result
     },
-    async getBloggerByID(id: number): Promise<bloggersType | null> {
-        // let blogger: bloggersType | null = await collectionBloggers.findOne({id})
-        let blogger: bloggersType | null = await collectionBloggers.findOne({id}, {projection:{_id: 0}})
+    async getBloggerByID(id: number): Promise<BloggersType | null> {
+        // let blogger: BloggersType | null = await collectionBloggers.findOne({id})
+        let blogger: BloggersType | null = await collectionBloggers.findOne({id}, {projection:{_id: 0}})
         return blogger
     },
-    async postBlogger(newBlogger: bloggersType): Promise<bloggersType> {
+    async postBlogger(newBlogger: BloggersType): Promise<BloggersType> {
         // const bloggerTypeDb = {
         //     _id: new ObjectId,
         //     ...newBlogger
