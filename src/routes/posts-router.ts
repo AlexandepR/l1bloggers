@@ -18,12 +18,18 @@ export const contentValidation = body('content')
     .trim().exists().notEmpty().withMessage('Please fill in the field - content')
     .isLength({min: 0, max: 1000}).withMessage('content length should be from 0 to 1000 symbols')
 
-postsRouter.get('', async (req: Request, res: Response) => {
-    const pageSize: number = parseInt(req.query.PageSize as string) || 10;
-    const pageNumber: number = parseInt(req.query.PageNumber as string) || 1;
+// app.use('/news', newRouter, (req:Request,res:Response) => {res.send})
 
-    const posts = await postsService.getPosts(pageNumber, pageSize)
+postsRouter.get('',
+    // body('title').isLength({min: 1, max: 15}),
+    // body('title').toInt(),
+    async (req: Request, res: Response) => {
+    const pageSize = req.query.PageSize || 10;
+    const pageNumber = req.query.PageNumber || 1;
+
+    const posts = await postsService.getPosts(+pageNumber, +pageSize)
     if (posts){
+        // const book = repository.xxx(req.body)
     res.status(200).send(posts)
     } else {}
 })
@@ -43,38 +49,45 @@ postsRouter.get('/:id', async (req: Request, res: Response) => {
     }
 })
 
+// postsRouter.post('',
+//     authMiddleware,
+//     titleValidation,
+//     shortDescriptionValidation,
+//     contentValidation,
+//     inputValidationMiddleware,
+//     async (req: Request, res: Response) => {
+//         const {title, shortDescription, content, bloggerId} = req.body
+//         const newPosts = await postsService.postPosts(
+//             title, shortDescription, content, bloggerId
+//         )
+//         if (newPosts) {
+//             if (typeof newPosts !== "boolean") {
+//                 res.status(201).send({
+//                         id: newPosts.id,
+//                         title: newPosts.title,
+//                         shortDescription: newPosts.shortDescription,
+//                         content: newPosts.content,
+//                         bloggerId: newPosts.bloggerId,
+//                         bloggerName: newPosts.bloggerName
+//                     }
+//                 )
+//             }
+//         } else {
+//             res.status(400)
+//                 .send({
+//                     errorsMessages: [{
+//                         message: "Should be correct ID",
+//                         field: "bloggerId"
+//                     }],
+//                 })
+//         }
+//     })
 postsRouter.post('',
-    authMiddleware,
-    titleValidation,
-    shortDescriptionValidation,
-    contentValidation,
-    inputValidationMiddleware,
-    async (req: Request, res: Response) => {
-        const {title, shortDescription, content, bloggerId} = req.body
-        const newPosts = await postsService.postPosts(
-            title, shortDescription, content, bloggerId
-        )
-        if (newPosts) {
-            if (typeof newPosts !== "boolean") {
-                res.status(201).send({
-                        id: newPosts.id,
-                        title: newPosts.title,
-                        shortDescription: newPosts.shortDescription,
-                        content: newPosts.content,
-                        bloggerId: newPosts.bloggerId,
-                        bloggerName: newPosts.bloggerName
-                    }
-                )
-            }
-        } else {
-            res.status(400)
-                .send({
-                    errorsMessages: [{
-                        message: "Should be correct ID",
-                        field: "bloggerId"
-                    }],
-                })
-        }
+body('title').toInt(),
+(req: Request, res: Response) => {
+        const title= req.body.title
+    console.log(typeof title)
+    res.send(title)
     })
 postsRouter.put('/:id',
     authMiddleware,
