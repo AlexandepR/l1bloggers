@@ -1,4 +1,5 @@
 import {MongoClient} from 'mongodb'
+import {UserDBType} from "./users-repository";
 
 // interface pagination {
 //     pagesCount: number,
@@ -23,10 +24,10 @@ export type PostsType = {
     bloggerId: number
     bloggerName: string
 }
-export type UserType = {
-    id: string,
-    login: string
-}
+// export type UserType = {
+//     id: string,
+//     login: string
+// }
 
 // const mongoUri = process.env.mongoURI || "mongodb://0.0.0.0:27017"
 const mongoUri = ('mongodb+srv://Alexandep:PyGSIcZUZ0llnWkK@cluster0.wcy2s6z.mongodb.net/allBloggers?retryWrites=true&w=majority')
@@ -35,7 +36,7 @@ const client = new MongoClient(mongoUri);
 const db = client.db("allBloggers");
 export const collectionBloggers = db.collection<BloggersType>("bloggers");
 export const collectionPosts = db.collection<PostsType>("posts");
-export const collectionUsers = db.collection<UserType>("users");
+export const collectionUsers = db.collection<UserDBType>("users");
 
 export async function runDb() {
         try {
