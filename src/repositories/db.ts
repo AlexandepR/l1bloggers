@@ -1,4 +1,4 @@
-import {MongoClient} from 'mongodb'
+import {MongoClient, WithId} from 'mongodb'
 import {UserDBType} from "./users-db-repository";
 // import { WithId, ObjectId } from 'mongodb'
 
@@ -11,12 +11,19 @@ import {UserDBType} from "./users-db-repository";
 //     items: string
 // }
 
-
+// BloggerItemType
 export type BloggersType = {
-    id: number
+    // id: number
     name: string
     youtubeUrl: string
 }
+export type BloggerItemDBType = WithId<BloggersType>
+
+// export type BloggersType = {
+//     id: number
+//     name: string
+//     youtubeUrl: string
+// }
 export type PostsType = {
     _id?: number
     id: number
