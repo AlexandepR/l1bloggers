@@ -18,18 +18,14 @@ export const contentValidation = body('content')
     .trim().exists().notEmpty().withMessage('Please fill in the field - content')
     .isLength({min: 0, max: 1000}).withMessage('content length should be from 0 to 1000 symbols')
 
-// app.use('/news', newRouter, (req:Request,res:Response) => {res.send})
 
 postsRouter.get('',
-    // body('title').isLength({min: 1, max: 15}),
-    // body('title').toInt(),
     async (req: Request, res: Response) => {
     const pageSize = req.query.PageSize || 10;
     const pageNumber = req.query.PageNumber || 1;
 
     const posts = await postsService.getPosts(+pageNumber, +pageSize)
     if (posts){
-        // const book = repository.xxx(req.body)
     res.status(200).send(posts)
     } else {}
 })

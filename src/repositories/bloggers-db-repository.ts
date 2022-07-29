@@ -3,18 +3,17 @@ import {BloggersType, collectionBloggers} from "./db";
 export let __bloggers = [
     {id: 0, name: "Petya", youtubeUrl: "https://www.youtube.com/uOWp8HU"},
 ]
-type test<T> = {
+export type bloggersDataType<T> = {
     "pagesCount": number,
     "page": number,
     "pageSize":number,
     "totalCount": number,
-    // "items": changeArray
     "items": T
 }
 
 
 export const bloggersRepository = {
-    async getBloggers(pageNumber: number, pageSize: number, searchNameTerm: string | null): Promise<test<BloggersType[]>>  {
+    async getBloggers(pageNumber: number, pageSize: number, searchNameTerm: string | null): Promise<bloggersDataType<BloggersType[]>>  {
         const filter: any = {}
         if (searchNameTerm) {
             filter.name = {$regex: searchNameTerm}

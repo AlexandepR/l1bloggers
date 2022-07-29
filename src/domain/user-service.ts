@@ -1,12 +1,19 @@
-import {UserType} from "../repositories/db";
-import {resultType, usersRepository} from "../repositories/users-repository";
+import {ResultType, UserDBType, usersRepository} from "../repositories/users-repository";
+import {authService} from "./auth-servise";
+import {ObjectId} from "mongodb";
 
 
 export const usersService = {
-    async getUsers(pageNumber: number, pageSize: number): Promise<resultType<UserType[]>> {
-       return usersRepository.getUsers(pageNumber, pageSize)
+    async getUsers(pageNumber: number, pageSize: number): Promise<ResultType<UserDBType[]>> {
+        return usersRepository.getUsers(pageNumber, pageSize)
     },
-    async createService(login: string, password: string): Promise<any> {
-        return usersRepository.createUser(login, password)
+    async createUser(login: string, password: string): Promise<UserDBType> {
+        const passwordHash = await authService.generateHash(password)
+        const user: UserDBType = {
+            // _id: new ObjectId(),
+            login,
+            // passwordHash
+        }
+        return usersRepository.createUser(user)
     }
 }

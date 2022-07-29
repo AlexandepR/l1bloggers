@@ -1,16 +1,15 @@
 import {collectionBloggers, collectionPosts, PostsType} from "./db";
 
-export type postsBloggerType = {
+export type postsBloggerType<T> = {
     pagesCount: number
     page: number
     pageSize: number
     totalCount: number
-    items: PostsType[] | void
+    items: T
 }
 
-
 export const postsRepository = {
-    async getPosts(pageNumber: number, pageSize: number): Promise<any> {
+    async getPosts(pageNumber: number, pageSize: number): Promise<postsBloggerType<PostsType[]>> {
         const totalCount = await collectionPosts.count({});
         const skip = (pageNumber - 1) * pageSize
         const pagesCount = Math.ceil(await collectionPosts.count({}) / pageSize)
@@ -31,17 +30,15 @@ export const postsRepository = {
         let post: PostsType | null = await collectionPosts.findOne({id})
         return post
     },
-    async getBloggerPosts(bloggerId: number, pageSize: number, pageNumber: number): Promise<PostsType[] | null | PostsType | postsBloggerType> {
+    async getBloggerPosts(bloggerId: number, pageSize: number, pageNumber: number): Promise<postsBloggerType<PostsType[]>> {
         const totalCount = await collectionPosts.count({bloggerId})
-        // const totalCount = 13
         const skip = (pageNumber - 1) * pageSize
         const pagesCount = Math.ceil(+totalCount / pageSize)
-        // const pageSize = pageSize;
         let posts: PostsType[] | null | PostsType = await collectionPosts.find({bloggerId}).skip(skip).limit(pageSize).toArray()
         const result = posts.map(({_id, ...obj}) => {
             return obj;
         })
-        const postsBlogger: postsBloggerType = {
+        const postsBlogger: postsBloggerType<PostsType[]> = {
             pagesCount: pagesCount,
             page: pageNumber,
             pageSize: pageSize,
