@@ -1,5 +1,7 @@
 import {MongoClient} from 'mongodb'
-import {UserDBType} from "./users-repository";
+import {UserDBType} from "./users-db-repository";
+// import { WithId, ObjectId } from 'mongodb'
+
 
 // interface pagination {
 //     pagesCount: number,

@@ -30,7 +30,7 @@ export const bloggersRepository = {
             "pageSize":pageSize,
             "totalCount": totalCount,
             // "items": changeArray
-            "items": newArray
+            "items": changeArray
         }
         return result
     },
