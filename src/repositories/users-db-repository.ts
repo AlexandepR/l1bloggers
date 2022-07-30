@@ -9,7 +9,11 @@ export type ResultType<T> = {
     "totalCount": number
     "items": T
 }
+// export type UserDBType = WithId<{
+//     login: string
+// }>
 export type UserDBType = WithId<{
+
     login: string
 }>
 
@@ -20,7 +24,10 @@ export const usersDbRepository =  {
     const skip = (pageNumber - 1) * pageSize
         const pagesCount = Math.ceil(totalCount / pageSize)
         const newArray = await collectionUsers.find().skip(skip).limit(pageSize).toArray()
-        // const changeArray = newArray.map(({_id, ...obj}) => {return obj})
+        const changeArray = newArray.map(({_id, ...obj}) => {return obj})
+        // const changeArray = newArray.map(u => ({id: u._id, login: u.login}))
+        // const newId = new ObjectId()
+        // console.log( typeof (newId))
         const result = {
             "pagesCount": pagesCount,
             "page": pageNumber,
