@@ -34,10 +34,17 @@ bloggersRouter.get('', async (req: Request, res: Response) => {
     )
 })
 bloggersRouter.get('/:id', async (req: Request, res: Response) => {
+    // try {
+    //     new ObjectId(req.params.id);
+    // } catch (err) {
+    //     return res.status(404).send();
+    // }
     const blogger = await bloggersService.getBloggerByID(+req.params.id)
     if (blogger) {
+        // res.status(200).send(transferIdToString (blogger))
+        // res.status(200).send((blogger))
         res.status(200).send({
-            id: blogger.id,
+            // id: blogger.id,
             name: blogger.name,
             youtubeUrl: blogger.youtubeUrl
         })
@@ -62,12 +69,12 @@ bloggersRouter.get('/:bloggerId/posts', async (req: Request, res: Response) => {
 })
 
 bloggersRouter.post('/', authMiddleware, nameValidation, youtubeUrlValidator, inputValidationMiddleware,
-    async (req: Request, res: Response) => {
+    async (req: Request, res: Response ) => {
         const newBlogger = await bloggersService.createBlogger(req.body.name, req.body.youtubeUrl);
         if (newBlogger) {
             res.status(201)
             res.send({
-                    id: newBlogger.id,
+                    // id: newBlogger.id,
                     name: newBlogger.name,
                     youtubeUrl: newBlogger.youtubeUrl
                 }
